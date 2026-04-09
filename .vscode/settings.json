@@ -1,0 +1,32 @@
+{
+  "biome.configurationPath": "./biome.json",
+  "biome.lsp.bin": "./node_modules/@biomejs/biome/bin/biome",
+  "biome.suggestInstallingGlobally": false,
+  "editor.detectIndentation": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "git.autofetch": true,
+  "python.terminal.activateEnvironment": false,
+  "terminal.integrated.scrollback": 10000,
+  "[csv]": {
+    "editor.defaultFormatter": "csvlinter.csvlinter-vscode"
+  },
+  "[javascript][json][jsonc][typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.formatDocument": "explicit"
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true
+  }
+}

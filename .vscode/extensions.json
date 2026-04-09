@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "csvlinter.csvlinter-vscode",
+    "mechatroner.rainbow-csv",
+    "tamasfe.even-better-toml"
+  ]
+}
