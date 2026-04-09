@@ -2,3 +2,4 @@
 
 - [ ] Docker
 - [ ] CI/CD
+- [ ] Negative loot?

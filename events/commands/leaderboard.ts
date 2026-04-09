@@ -2,6 +2,7 @@ import {
   type APIEmbedField,
   type ChatInputCommandInteraction,
   EmbedBuilder,
+  MessageFlags,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
 } from "discord.js";
@@ -37,6 +38,7 @@ const getEmbed = async (): Promise<APIEmbedField[]> => {
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
   await interaction
     .reply({
+      flags: MessageFlags.SuppressNotifications,
       embeds: [
         new EmbedBuilder()
           .setColor(0x78866b)

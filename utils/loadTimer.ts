@@ -3,6 +3,8 @@ import {
   type Client,
   Events,
   type Message,
+  type MessageCreateOptions,
+  MessageFlags,
   type MessageReaction,
   type ReactionCollector,
   type TextChannel,
@@ -55,8 +57,12 @@ const sendMessage = (): void => {
     .fetch(Bun.env.CHANNEL_ID)
     .then(async (channel: Channel | null): Promise<void | Message> => {
       if (channel) {
+        const options: MessageCreateOptions = {
+          content: "✯ 𝕃𝕆𝕆𝕋 𝔻ℝ𝕆ℙ ✯",
+          flags: MessageFlags.SuppressNotifications
+        };
         // biome-ignore lint/suspicious/noExplicitAny: catch all errors
-        const message: void | Message = await (channel as TextChannel).send("✯ 𝕃𝕆𝕆𝕋 𝔻ℝ𝕆ℙ ✯").catch((e: any) => {
+        const message: void | Message = await (channel as TextChannel).send(options).catch((e: any) => {
           error(e);
           throw e;
         });
@@ -76,8 +82,12 @@ const sendMessage = (): void => {
           collector.on("collect", async (_: MessageReaction, user: User): Promise<void> => {
             const loot: ILoot = getLoot();
             const points: number = getRandomNumber(loot.min, loot.max);
+            const options: MessageCreateOptions = {
+              content: `> **Congratulations, \`${user.displayName}\`!  ✨  You found \`${loot.name}\` for \`$${points}\`**`,
+              flags: MessageFlags.SuppressNotifications
+            };
             await (channel as TextChannel)
-              .send(`> **Congratulations, \`${user.displayName}\`!  ✨  You got \`${loot.name}\` for \`$${points}\`**`)
+              .send(options)
               // biome-ignore lint/suspicious/noExplicitAny: catch all errors
               .catch((e: any) => {
                 error(e);
@@ -91,8 +101,12 @@ const sendMessage = (): void => {
 
           collector.on("end", async (): Promise<void> => {
             if (!collector.collected.size) {
+              const options: MessageCreateOptions = {
+                content: "> Too slow.",
+                flags: MessageFlags.SuppressNotifications
+              };
               // biome-ignore lint/suspicious/noExplicitAny: catch all errors
-              await (channel as TextChannel).send("Too slow.").catch((e: any) => {
+              await (channel as TextChannel).send(options).catch((e: any) => {
                 error(e);
                 throw e;
               });

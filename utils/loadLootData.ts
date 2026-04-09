@@ -25,7 +25,7 @@ const loadLootData = async (): Promise<void> => {
       }
     });
 
-    bulkInsert((await ConvertCsvToJson.getJsonFromCsvAsync("./utils/loot.csv")) as ILoot[]);
+    bulkInsert((await ConvertCsvToJson.getJsonFromCsvAsync(`${__dirname}/loot/loot.csv`)) as ILoot[]);
 
     if (Bun.env.DEBUG) {
       info("Loot items inserted");
@@ -37,4 +37,21 @@ const loadLootData = async (): Promise<void> => {
   }
 };
 
-export default loadLootData;
+const clearLoot = async (): Promise<void> => {
+  if (!DB) {
+    throw Error("Database not open");
+  }
+
+  try {
+    DB.query("DELETE FROM loot;").run();
+    if (Bun.env.DEBUG) {
+      info("Loot table cleared");
+    }
+    // biome-ignore lint/suspicious/noExplicitAny: catch all errors
+  } catch (e: any) {
+    error(e);
+    throw e;
+  }
+};
+
+export { clearLoot, loadLootData };

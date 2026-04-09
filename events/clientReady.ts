@@ -21,7 +21,7 @@ const invoke = async (client: Client): Promise<void> => {
     const commandFile: ICommandFile = await import(`${__dirname}/commands/${command}`);
     commandsArray.push(commandFile.create());
     if (Bun.env.DEBUG) {
-      info(`Loaded ${command} command`);
+      info(`Loaded /${command} command`);
     }
   }
   client.application?.commands.set(commandsArray);

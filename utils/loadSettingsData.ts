@@ -3,7 +3,7 @@ import { type Statement } from "bun:sqlite";
 import { DB, type IChanges } from "./database";
 import { info } from "./logger";
 
-const loadSettingsData = (): void => {
+const loadSettingsData = async (): Promise<void> => {
   if (!DB) {
     throw Error("Database not open");
   }

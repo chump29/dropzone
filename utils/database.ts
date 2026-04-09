@@ -2,7 +2,7 @@ import { mkdir } from "fs/promises";
 
 import { Database } from "bun:sqlite";
 
-import loadLootData from "./loadLootData";
+import { loadLootData } from "./loadLootData";
 import loadSettingsData from "./loadSettingsData";
 import { error, info } from "./logger";
 
@@ -69,7 +69,7 @@ const openDatabase = async (): Promise<void> => {
     )`;
       DB.run(table);
 
-      loadSettingsData();
+      await loadSettingsData();
 
       await loadLootData();
     }
