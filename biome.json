@@ -35,8 +35,6 @@
     "ignoreUnknown": true,
     "includes": [
       "**",
-      "!!coverage",
-      "!!dist",
       "!!node_modules",
       "!!package.json"
     ]

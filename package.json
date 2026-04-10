@@ -21,7 +21,7 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "clean": "rimraf node_modules dist",
+    "clean": "rimraf node_modules",
     "clean:db": "rimraf db",
     "dev": "bun --watch run index.ts",
     "lint": "biome check --write --verbose",
@@ -44,7 +44,7 @@
     "@bun-security-scanner/osv": "^1.0.0",
     "@types/bun": "^1.3.11",
     "@types/ms": "^2.1.0",
-    "@types/node": "^25.5.2",
+    "@types/node": "^25.6.0",
     "globals": "^17.4.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
