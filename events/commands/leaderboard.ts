@@ -7,16 +7,22 @@ import {
   SlashCommandBuilder
 } from "discord.js";
 
-import { getAll, type IUser } from "../../utils/database";
-import { error } from "../../utils/logger";
+import { getAll, type IUser } from "../../utils/database.ts";
+import { error } from "../../utils/logger.ts";
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder().setName("leaderboard").setDescription("Show DropZoneBot leaderboard").toJSON();
 };
 
+const BLANK: APIEmbedField = {
+  name: "_ _",
+  value: ""
+};
+
 const getEmbed = async (): Promise<APIEmbedField[]> => {
   const fields: APIEmbedField[] = await getAll().then((users: IUser[]) => {
     const fields: APIEmbedField[] = [];
+    fields.push(BLANK);
     users.forEach((user: IUser) => {
       fields.push({
         inline: true,
@@ -27,7 +33,7 @@ const getEmbed = async (): Promise<APIEmbedField[]> => {
     return fields;
   });
   if (!fields.length) {
-    fields.push({
+    fields.push(BLANK, {
       name: "Nothing to show",
       value: ""
     } as APIEmbedField);
@@ -42,7 +48,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
       embeds: [
         new EmbedBuilder()
           .setColor(0x78866b)
-          .setTitle("DropZoneBot Leaderboard")
+          .setTitle("🏆 DropZoneBot Leaderboard 🏆")
           .setFields(await getEmbed())
       ]
     })

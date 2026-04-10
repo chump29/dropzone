@@ -2,7 +2,7 @@ import { readdir } from "fs/promises";
 
 import { type Client, type RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js";
 
-import { info } from "../utils/logger";
+import { info } from "../utils/logger.ts";
 
 interface ICommandFile {
   create(): RESTPostAPIChatInputApplicationCommandsJSONBody;
@@ -17,13 +17,15 @@ const invoke = async (client: Client): Promise<void> => {
   });
 
   const commandsArray: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
-  for (const command of commands) {
-    const commandFile: ICommandFile = await import(`${__dirname}/commands/${command}`);
-    commandsArray.push(commandFile.create());
-    if (Bun.env.DEBUG) {
-      info(`Loaded /${command} command`);
-    }
-  }
+  await Promise.all(
+    commands.map(async (command: string): Promise<void> => {
+      const commandFile: ICommandFile = await import(`${__dirname}/commands/${command}`);
+      commandsArray.push(commandFile.create());
+      if (Bun.env.DEBUG) {
+        info(`Loaded /${command} command`);
+      }
+    })
+  );
   client.application?.commands.set(commandsArray);
 
   if (Bun.env.DEBUG) {

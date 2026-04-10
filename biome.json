@@ -199,6 +199,10 @@
   },
   "linter": {
     "enabled": true,
+    "domains": {
+      "project": "all",
+      "types": "all"
+    },
     "rules": {
       "recommended": false,
       "complexity": {
@@ -210,6 +214,8 @@
       },
       "correctness": {
         "noChildrenProp": "error",
+        "noUndeclaredDependencies": "off",
+        "noUnresolvedImports": "off",
         "noUnusedFunctionParameters": "error",
         "noUnusedVariables": "error",
         "useJsxKeyInIterable": "error",
@@ -220,8 +226,17 @@
         "noImpliedEval": "error",
         "useExpect": "error",
         "useExplicitType": "error",
-        "useImportsFirst": "error",
-        "useNullishCoalescing": "error"
+        "useImportsFirst": "error"
+      },
+      "performance": {
+        "noAccumulatingSpread": "error",
+        "noAwaitInLoops": "error",
+        "noBarrelFile": "error",
+        "noDelete": "error",
+        "noDynamicNamespaceImportAccess": "error",
+        "noNamespaceImport": "error",
+        "noReExportAll": "error",
+        "useTopLevelRegex": "warn"
       },
       "security": {
         "noBlankTarget": "error",

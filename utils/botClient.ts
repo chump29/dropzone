@@ -1,7 +1,7 @@
 import { ActivityType, Client, GatewayIntentBits } from "discord.js";
 
-import { DB } from "./database";
-import { info } from "./logger";
+import { close } from "./database.ts";
+import { info } from "./logger.ts";
 
 const botClient = async (): Promise<Client> => {
   const client: Client = new Client({
@@ -21,7 +21,7 @@ const botClient = async (): Promise<Client> => {
 
   process.on("SIGINT", () => {
     info("Shutting down...");
-    DB?.close();
+    close();
     client.destroy().then((): void => {
       process.exit();
     });

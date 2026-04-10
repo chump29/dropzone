@@ -26,9 +26,7 @@ const loadCommands = async (client: Client): Promise<void> => {
     return dir.filter((file: string) => file.endsWith(".ts")).map((file) => file.slice(0, -3));
   });
 
-  for (const event of events) {
-    await loadCommand(client, event);
-  }
+  await Promise.all(events.map(async (event: string): Promise<void> => await loadCommand(client, event)));
 };
 
 export default loadCommands;

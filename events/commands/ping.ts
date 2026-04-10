@@ -5,7 +5,7 @@ import {
   SlashCommandBuilder
 } from "discord.js";
 
-import { error } from "../../utils/logger";
+import { error } from "../../utils/logger.ts";
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder().setName("ping").setDescription("Ping the bot").toJSON();

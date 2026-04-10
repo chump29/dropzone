@@ -4,7 +4,7 @@ import { format } from "date-and-time";
 import { bgBlue, bgRed, cyan, red, white } from "recolors";
 
 const getTime = (): string => {
-  return cyan(" [") + white(format(new Date(), "HH:mm:ss")) + cyan("] ");
+  return cyan(" [") + white(format(new Date(), "MM/DD/YYYY @ HH:mm:ss")) + cyan("] ");
 };
 
 const error = (...o: any[]): void => {

@@ -1,7 +1,6 @@
 import {
   type Channel,
   type Client,
-  Events,
   type Message,
   type MessageCreateOptions,
   MessageFlags,
@@ -12,9 +11,8 @@ import {
 } from "discord.js";
 import ms, { type StringValue } from "ms";
 
-import { getSetting, updatePoints } from "./database";
-import { error, info } from "./logger";
-import { getLoot, type ILoot } from "./loot";
+import { getLoot, getSetting, type ILoot, updatePoints } from "./database.ts";
+import { error, info } from "./logger.ts";
 
 let EMOJI: string = "";
 let MAX_TIME: number = 0;
@@ -22,6 +20,8 @@ let MIN_TIME: number = 0;
 let TIMEOUT: number = 0;
 
 let CLIENT: Client | null = null;
+
+let ID: NodeJS.Timeout | null = null;
 
 const loadSettings = async (): Promise<void> => {
   EMOJI = (await getSetting("emoji")) ?? "💰";
@@ -80,7 +80,7 @@ const sendMessage = (): void => {
           });
 
           collector.on("collect", async (_: MessageReaction, user: User): Promise<void> => {
-            const loot: ILoot = getLoot();
+            const loot: ILoot = await getLoot();
             const points: number = getRandomNumber(loot.min, loot.max);
             const options: MessageCreateOptions = {
               content: `> **Congratulations, \`${user.displayName}\`!  ✨  You found \`${loot.name}\` for \`$${points}\`**`,
@@ -93,7 +93,7 @@ const sendMessage = (): void => {
                 error(e);
                 throw e;
               });
-            updatePoints(user.displayName, points);
+            await updatePoints(user.displayName, points);
             if (Bun.env.DEBUG) {
               info(`${user.displayName} claimed ${loot.name} for $${points}`);
             }
@@ -125,18 +125,26 @@ const sendMessage = (): void => {
     });
 
   const t: number = getRandomNumber(MIN_TIME, MAX_TIME);
+  stopDrop();
   nextDrop(t);
-  setTimeout(sendMessage, t);
+  ID = setTimeout(sendMessage, t);
+};
+
+const startDrop = (): void => {
+  const timeout: number = getRandomNumber(MIN_TIME, MAX_TIME);
+  nextDrop(timeout);
+  ID = setTimeout(sendMessage, timeout);
+};
+
+const stopDrop = (): void => {
+  if (ID) {
+    clearTimeout(ID);
+  }
 };
 
 const loadTimer = async (client: Client): Promise<void> => {
-  await loadSettings();
   CLIENT = client;
-  CLIENT.once(Events.ClientReady, (): void => {
-    const timeout: number = getRandomNumber(MIN_TIME, MAX_TIME);
-    nextDrop(timeout);
-    setTimeout(sendMessage, timeout);
-  });
+  await loadSettings();
 };
 
-export default loadTimer;
+export { loadTimer, startDrop, stopDrop };

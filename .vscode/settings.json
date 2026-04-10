@@ -9,6 +9,7 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "git.autofetch": true,
+  "js/ts.preferences.importModuleSpecifier": "relative",
   "python.terminal.activateEnvironment": false,
   "terminal.integrated.scrollback": 10000,
   "[csv]": {
