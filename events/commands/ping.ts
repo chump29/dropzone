@@ -8,7 +8,7 @@ import {
 import { error } from "../../utils/logger.ts";
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder().setName("ping").setDescription("Ping the bot").toJSON();
+  return new SlashCommandBuilder().setName("ping").setDescription("Ping DropZoneBot").toJSON();
 };
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
