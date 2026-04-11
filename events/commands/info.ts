@@ -15,11 +15,14 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 
 const embed: EmbedBuilder = new EmbedBuilder()
   .setColor(0x78866b)
-  .setTitle(`DropZoneBot v${Bun.env.npm_package_version}`)
+  .setAuthor({
+    iconURL: Bun.env.LOGO_URL,
+    name: `WelcomeBot v${Bun.env.npm_package_version}`
+  })
   .setThumbnail(Bun.env.LOGO_URL)
   .setDescription("- Collect military items for cash!")
   .setFooter({
-    text: "Chris Post"
+    text: "By Chris Post"
   });
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
