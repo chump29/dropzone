@@ -25,7 +25,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
     .reply({
       flags: MessageFlags.Ephemeral,
       embeds: [
-        embed
+        embed.toJSON()
       ]
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors

@@ -50,6 +50,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
           .setColor(0x78866b)
           .setTitle("🏆 DropZoneBot Leaderboard 🏆")
           .setFields(await getEmbed())
+          .toJSON()
       ]
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
