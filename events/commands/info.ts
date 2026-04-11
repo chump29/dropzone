@@ -6,6 +6,7 @@ import {
   SlashCommandBuilder
 } from "discord.js";
 
+import { checkRate } from "../../utils/checkRate.ts";
 import { error } from "../../utils/logger.ts";
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
@@ -15,12 +16,17 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 const embed: EmbedBuilder = new EmbedBuilder()
   .setColor(0x78866b)
   .setTitle(`DropZoneBot v${Bun.env.npm_package_version}`)
+  .setThumbnail(Bun.env.LOGO_URL)
   .setDescription("- Collect military items for cash!")
   .setFooter({
     text: "Chris Post"
   });
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
+  if (await checkRate(interaction)) {
+    return;
+  }
+
   await interaction
     .reply({
       flags: MessageFlags.Ephemeral,

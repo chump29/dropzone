@@ -7,6 +7,7 @@ import {
   SlashCommandBuilder
 } from "discord.js";
 
+import { checkRate } from "../../utils/checkRate.ts";
 import { getAll, type IUser } from "../../utils/database.ts";
 import { error } from "../../utils/logger.ts";
 
@@ -42,13 +43,17 @@ const getEmbed = async (): Promise<APIEmbedField[]> => {
 };
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
+  if (await checkRate(interaction)) {
+    return;
+  }
+
   await interaction
     .reply({
       flags: MessageFlags.SuppressNotifications,
       embeds: [
         new EmbedBuilder()
           .setColor(0x78866b)
-          .setTitle("🏆 DropZoneBot Leaderboard 🏆")
+          .setTitle("🏆  DropZoneBot Leaderboard  🏆")
           .setFields(await getEmbed())
           .toJSON()
       ]
