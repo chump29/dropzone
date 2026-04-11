@@ -83,7 +83,7 @@ const sendMessage = (): void => {
             const loot: ILoot = await getLoot();
             const points: number = getRandomNumber(loot.min, loot.max);
             const options: MessageCreateOptions = {
-              content: `> **Congratulations, \`${user.displayName}\`!  ✨  You found \`${loot.name}\` for \`$${points}\`**`,
+              content: `-# > **Congratulations, \`${user.displayName}\`!  ✨  You found \`${loot.name}\` for \`$${points}\`**`,
               flags: MessageFlags.SuppressNotifications
             };
             await (channel as TextChannel)
@@ -102,7 +102,7 @@ const sendMessage = (): void => {
           collector.on("end", async (): Promise<void> => {
             if (!collector.collected.size) {
               const options: MessageCreateOptions = {
-                content: "> Too slow.",
+                content: "-# > Too slow.",
                 flags: MessageFlags.SuppressNotifications
               };
               // biome-ignore lint/suspicious/noExplicitAny: catch all errors

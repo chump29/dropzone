@@ -33,7 +33,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
 
   await interaction
     .reply({
-      content: `-# ↩️ ${content}`,
+      content: `-# > ↩️ ${content}`,
       flags: MessageFlags.SuppressNotifications
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors

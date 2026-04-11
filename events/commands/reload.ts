@@ -19,7 +19,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
 
   await interaction
     .reply({
-      content: "-# 🔄 Loot table has been reloaded",
+      content: "-# > 🔄 Loot table has been reloaded",
       flags: MessageFlags.Ephemeral
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors

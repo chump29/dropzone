@@ -17,7 +17,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
 
   await interaction
     .reply({
-      content: "-# ⏹️ DropZoneBot stopped",
+      content: "-# > ⏹️ DropZoneBot stopped",
       flags: MessageFlags.SuppressNotifications
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors

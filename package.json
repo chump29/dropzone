@@ -27,7 +27,8 @@
     "lint": "biome check --write --verbose",
     "lint:ci": "biome ci --verbose --reporter=default --reporter=github",
     "preinstall": "bunx only-allow bun",
-    "prepare": "husky"
+    "prepare": "husky",
+    "prod": "bun run index.ts"
   },
   "lint-staged": {
     "*.{json,ts}": "biome ci --no-errors-on-unmatched"

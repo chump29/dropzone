@@ -14,7 +14,7 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
   await interaction
     .reply({
-      content: `-# **Pong!** ⚡ Your latency is: \`${Date.now() - interaction.createdTimestamp}ms\``,
+      content: `-# > **Pong!** ⚡ Your latency is: \`${Date.now() - interaction.createdTimestamp}ms\``,
       flags: MessageFlags.Ephemeral
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
