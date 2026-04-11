@@ -104,7 +104,7 @@ const loadLootData = async (): Promise<void> => {
       }
     });
 
-    bulkInsert((await ConvertCsvToJson.getJsonFromCsvAsync(`${__dirname}/loot/loot.csv`)) as ILoot[]);
+    bulkInsert((await ConvertCsvToJson.getJsonFromCsvAsync(`${__dirname}/loot.csv`)) as ILoot[]);
 
     if (Bun.env.DEBUG) {
       info("Loot items inserted");
