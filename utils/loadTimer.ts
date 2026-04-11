@@ -58,7 +58,7 @@ const sendMessage = (): void => {
     .then(async (channel: Channel | null): Promise<void | Message> => {
       if (channel) {
         const options: MessageCreateOptions = {
-          content: "✯ 𝕃𝕆𝕆𝕋 𝔻ℝ𝕆ℙ ✯",
+          content: "✯ 𝕃𝕆𝕆𝕋 𝔻ℝ𝕆ℙ ✯", // cspell: disable-line
           flags: MessageFlags.SuppressNotifications
         };
         // biome-ignore lint/suspicious/noExplicitAny: catch all errors
