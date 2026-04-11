@@ -1,5 +1,7 @@
 # TODO
 
-- [ ] Docker
+- [ ] More loot
+- [ ] Create README
+- [ ] Docker container build
 - [ ] CI/CD
 - [ ] Negative loot?

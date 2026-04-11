@@ -2,6 +2,8 @@
   "recommendations": [
     "biomejs.biome",
     "csvlinter.csvlinter-vscode",
+    "darkriszty.markdown-table-prettify",
+    "davidanson.vscode-markdownlint",
     "mechatroner.rainbow-csv",
     "tamasfe.even-better-toml"
   ]
