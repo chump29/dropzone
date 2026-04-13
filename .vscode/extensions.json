@@ -1,11 +1,22 @@
 {
   "recommendations": [
+    "ahmadalli.vscode-nginx-conf",
+    "bierner.markdown-mermaid",
     "biomejs.biome",
+    "bradlc.vscode-tailwindcss",
     "csvlinter.csvlinter-vscode",
     "darkriszty.markdown-table-prettify",
     "davidanson.vscode-markdownlint",
+    "humao.rest-client",
     "mechatroner.rainbow-csv",
+    "ms-azuretools.vscode-containers",
+    "ms-python.black-formatter",
+    "ms-python.isort",
+    "ms-python.pylint",
+    "redhat.vscode-yaml",
     "streetsidesoftware.code-spell-checker",
-    "tamasfe.even-better-toml"
+    "tamasfe.even-better-toml",
+    "timonwong.shellcheck",
+    "vitest.explorer"
   ]
 }
