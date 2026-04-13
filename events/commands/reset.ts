@@ -5,11 +5,11 @@ import {
   SlashCommandBuilder,
   type SlashCommandUserOption,
   type User
-} from "discord.js";
+} from "discord.js"
 
-import { checkRate } from "../../utils/checkRate.ts";
-import { resetPoints } from "../../utils/database.ts";
-import { error, info } from "../../utils/logger.ts";
+import { checkRate } from "../../utils/checkRate.ts"
+import { resetPoints } from "../../utils/database.ts"
+import { error, info } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
@@ -18,22 +18,22 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
     .addUserOption(
       (option: SlashCommandUserOption): SlashCommandUserOption => option.setName("user").setDescription("User to reset")
     )
-    .toJSON();
-};
+    .toJSON()
+}
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
   if (await checkRate(interaction)) {
-    return;
+    return
   }
 
-  let content: string = "Reset all points";
+  let content: string = "Reset all points"
 
-  const user: User | null = interaction.options.getUser("user");
+  const user: User | null = interaction.options.getUser("user")
   if (user) {
-    await resetPoints(user.displayName);
-    content += ` for \`${user.displayName}\``;
+    await resetPoints(user.displayName)
+    content += ` for \`${user.displayName}\``
   } else {
-    await resetPoints();
+    await resetPoints()
   }
 
   await interaction
@@ -43,13 +43,13 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
     .catch((e: any) => {
-      error(e);
-      throw e;
-    });
+      error(e)
+      throw e
+    })
 
   if (Bun.env.DEBUG) {
-    info(content);
+    info(content)
   }
-};
+}
 
-export { create, invoke };
+export { create, invoke }

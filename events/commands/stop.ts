@@ -3,22 +3,22 @@ import {
   MessageFlags,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
-} from "discord.js";
+} from "discord.js"
 
-import { checkRate } from "../../utils/checkRate.ts";
-import { stopDrop } from "../../utils/loadTimer.ts";
-import { error, info } from "../../utils/logger.ts";
+import { checkRate } from "../../utils/checkRate.ts"
+import { stopDrop } from "../../utils/loadTimer.ts"
+import { error, info } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder().setName("stop").setDescription("Stop DropZoneBot").toJSON();
-};
+  return new SlashCommandBuilder().setName("stop").setDescription("Stop DropZoneBot").toJSON()
+}
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
   if (await checkRate(interaction)) {
-    return;
+    return
   }
 
-  stopDrop();
+  stopDrop()
 
   await interaction
     .reply({
@@ -27,13 +27,13 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
     .catch((e: any) => {
-      error(e);
-      throw e;
-    });
+      error(e)
+      throw e
+    })
 
   if (Bun.env.DEBUG) {
-    info("Stopped");
+    info("Stopped")
   }
-};
+}
 
-export { create, invoke };
+export { create, invoke }

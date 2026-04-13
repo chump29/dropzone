@@ -1,36 +1,36 @@
-import { readdir } from "fs/promises";
+import { readdir } from "fs/promises"
 
-import { type Client, type RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js";
+import { type Client, type RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js"
 
-import { info } from "../utils/logger.ts";
+import { info } from "../utils/logger.ts"
 
 interface ICommandFile {
-  create(): RESTPostAPIChatInputApplicationCommandsJSONBody;
+  create(): RESTPostAPIChatInputApplicationCommandsJSONBody
 }
 
-const ONCE: boolean = true;
-const NAME: string = "clientReady";
+const ONCE: boolean = true
+const NAME: string = "clientReady"
 
 const invoke = async (client: Client): Promise<void> => {
   const commands: string[] = await readdir(`${__dirname}/commands`).then((dir: string[]) => {
-    return dir.filter((file: string) => file.endsWith(".ts")).map((file) => file.slice(0, -3));
-  });
+    return dir.filter((file: string) => file.endsWith(".ts")).map((file) => file.slice(0, -3))
+  })
 
-  const commandsArray: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
+  const commandsArray: RESTPostAPIChatInputApplicationCommandsJSONBody[] = []
   await Promise.all(
     commands.map(async (command: string): Promise<void> => {
-      const commandFile: ICommandFile = await import(`${__dirname}/commands/${command}`);
-      commandsArray.push(commandFile.create());
+      const commandFile: ICommandFile = await import(`${__dirname}/commands/${command}`)
+      commandsArray.push(commandFile.create())
       if (Bun.env.DEBUG) {
-        info(`Loaded /${command} command`);
+        info(`Loaded /${command} command`)
       }
     })
-  );
-  client.application?.commands.set(commandsArray);
+  )
+  client.application?.commands.set(commandsArray)
 
   if (Bun.env.DEBUG) {
-    info(`Connected as ${client.user?.displayName} (${client.user?.tag})`);
+    info(`Connected as ${client.user?.displayName} (${client.user?.tag})`)
   }
-};
+}
 
-export { invoke, NAME, ONCE };
+export { invoke, NAME, ONCE }

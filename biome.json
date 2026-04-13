@@ -14,6 +14,8 @@
             "groups": [
               ":NODE:",
               ":BLANK_LINE:",
+              "react",
+              ":BLANK_LINE:",
               ":BUN:",
               ":BLANK_LINE:",
               ":PACKAGE:",
@@ -31,11 +33,20 @@
       }
     }
   },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
   "files": {
     "ignoreUnknown": true,
     "includes": [
       "**",
       "!!bun.lock",
+      "!!.pnpm-store",
+      "!!**/*.html",
+      "!!coverage",
+      "!!dist",
       "!!node_modules",
       "!!package.json"
     ]
@@ -63,7 +74,7 @@
       "jsxQuoteStyle": "double",
       "quoteProperties": "asNeeded",
       "quoteStyle": "double",
-      "semicolons": "always",
+      "semicolons": "asNeeded",
       "trailingCommas": "none",
       "trailingNewline": true
     },
@@ -193,6 +204,7 @@
       "onpopstate",
       "onpagereveal",
       "onemptied",
+      "vi",
       "Bun"
     ]
   },
@@ -200,6 +212,8 @@
     "enabled": true,
     "domains": {
       "project": "all",
+      "react": "all",
+      "test": "all",
       "types": "all"
     },
     "rules": {
@@ -266,7 +280,7 @@
   "overrides": [
     {
       "includes": [
-        "**/*.{ts}"
+        "**/*.{js,jsx,ts,tsx}"
       ],
       "linter": {
         "rules": {

@@ -3,18 +3,18 @@ import {
   MessageFlags,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
-} from "discord.js";
+} from "discord.js"
 
-import { checkRate } from "../../utils/checkRate.ts";
-import { error } from "../../utils/logger.ts";
+import { checkRate } from "../../utils/checkRate.ts"
+import { error } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder().setName("ping").setDescription("Ping DropZoneBot").toJSON();
-};
+  return new SlashCommandBuilder().setName("ping").setDescription("Ping DropZoneBot").toJSON()
+}
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
   if (await checkRate(interaction)) {
-    return;
+    return
   }
 
   await interaction
@@ -24,9 +24,9 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
     .catch((e: any) => {
-      error(e);
-      throw e;
-    });
-};
+      error(e)
+      throw e
+    })
+}
 
-export { create, invoke };
+export { create, invoke }

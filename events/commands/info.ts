@@ -4,14 +4,14 @@ import {
   MessageFlags,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
-} from "discord.js";
+} from "discord.js"
 
-import { checkRate } from "../../utils/checkRate.ts";
-import { error } from "../../utils/logger.ts";
+import { checkRate } from "../../utils/checkRate.ts"
+import { error } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder().setName("info").setDescription("Information about DropZoneBot").toJSON();
-};
+  return new SlashCommandBuilder().setName("info").setDescription("Information about DropZoneBot").toJSON()
+}
 
 const embed: EmbedBuilder = new EmbedBuilder()
   .setColor(0x78866b)
@@ -23,11 +23,11 @@ const embed: EmbedBuilder = new EmbedBuilder()
   .setDescription("- Collect military items for cash!")
   .setFooter({
     text: "By Chris Post"
-  });
+  })
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
   if (await checkRate(interaction)) {
-    return;
+    return
   }
 
   await interaction
@@ -39,9 +39,9 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
     .catch((e: any) => {
-      error(e);
-      throw e;
-    });
-};
+      error(e)
+      throw e
+    })
+}
 
-export { create, invoke };
+export { create, invoke }

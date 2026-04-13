@@ -5,46 +5,46 @@ import {
   MessageFlags,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
-} from "discord.js";
+} from "discord.js"
 
-import { checkRate } from "../../utils/checkRate.ts";
-import { getAll, type IUser } from "../../utils/database.ts";
-import { error } from "../../utils/logger.ts";
+import { checkRate } from "../../utils/checkRate.ts"
+import { getAll, type IUser } from "../../utils/database.ts"
+import { error } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder().setName("leaderboard").setDescription("Show DropZoneBot leaderboard").toJSON();
-};
+  return new SlashCommandBuilder().setName("leaderboard").setDescription("Show DropZoneBot leaderboard").toJSON()
+}
 
 const BLANK: APIEmbedField = {
   name: "_ _",
   value: ""
-};
+}
 
 const getEmbed = async (): Promise<APIEmbedField[]> => {
   const fields: APIEmbedField[] = await getAll().then((users: IUser[]) => {
-    const fields: APIEmbedField[] = [];
-    fields.push(BLANK);
+    const fields: APIEmbedField[] = []
+    fields.push(BLANK)
     users.forEach((user: IUser) => {
       fields.push({
         inline: true,
         name: user.name,
         value: `-# $${user.points}`
-      } as APIEmbedField);
-    });
-    return fields;
-  });
+      } as APIEmbedField)
+    })
+    return fields
+  })
   if (!fields.length) {
     fields.push(BLANK, {
       name: "Nothing to show",
       value: ""
-    } as APIEmbedField);
+    } as APIEmbedField)
   }
-  return fields;
-};
+  return fields
+}
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
   if (await checkRate(interaction)) {
-    return;
+    return
   }
 
   await interaction
@@ -60,9 +60,9 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
     .catch((e: any) => {
-      error(e);
-      throw e;
-    });
-};
+      error(e)
+      throw e
+    })
+}
 
-export { create, invoke };
+export { create, invoke }

@@ -3,24 +3,24 @@ import {
   MessageFlags,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
-} from "discord.js";
+} from "discord.js"
 
-import { checkRate } from "../../utils/checkRate.ts";
-import { clearLoot, loadLootData } from "../../utils/database.ts";
-import { error, info } from "../../utils/logger.ts";
+import { checkRate } from "../../utils/checkRate.ts"
+import { clearLoot, loadLootData } from "../../utils/database.ts"
+import { error, info } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder().setName("reload").setDescription("Reload loot table").toJSON();
-};
+  return new SlashCommandBuilder().setName("reload").setDescription("Reload loot table").toJSON()
+}
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
   if (await checkRate(interaction)) {
-    return;
+    return
   }
 
   await clearLoot().then(async (): Promise<void> => {
-    await loadLootData();
-  });
+    await loadLootData()
+  })
 
   await interaction
     .reply({
@@ -29,12 +29,12 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
     .catch((e: any) => {
-      error(e);
-      throw e;
-    });
+      error(e)
+      throw e
+    })
   if (Bun.env.DEBUG) {
-    info("Timer started");
+    info("Timer started")
   }
-};
+}
 
-export { create, invoke };
+export { create, invoke }
