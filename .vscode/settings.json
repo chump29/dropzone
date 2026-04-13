@@ -24,14 +24,6 @@
   "[toml]": {
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
-  "cSpell.ignorePaths": [
-    "biome.json",
-    "bun.lock",
-    "settings.json"
-  ],
-  "cSpell.ignoreWords": [
-    "bunx"
-  ],
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
     "source.formatDocument": "explicit"
