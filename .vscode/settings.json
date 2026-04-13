@@ -2,6 +2,7 @@
   "biome.configurationPath": "./biome.json",
   "biome.lsp.bin": "./node_modules/@biomejs/biome/bin/biome",
   "biome.suggestInstallingGlobally": false,
+  "css.lint.unknownAtRules": "ignore",
   "editor.detectIndentation": true,
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
