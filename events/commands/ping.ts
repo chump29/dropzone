@@ -9,7 +9,10 @@ import { checkRate } from "../../utils/checkRate.ts"
 import { error } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder().setName("ping").setDescription("Ping DropZoneBot").toJSON()
+  return new SlashCommandBuilder()
+    .setName(import.meta.file.slice(0, -3))
+    .setDescription(`Ping ${Bun.env.NAME}`)
+    .toJSON()
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {

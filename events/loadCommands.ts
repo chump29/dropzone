@@ -1,32 +1,34 @@
-import { readdir } from "fs/promises"
+import {
+  type ChatInputCommandInteraction,
+  type Client,
+  Events,
+  type Interaction,
+  type RESTPostAPIChatInputApplicationCommandsJSONBody
+} from "discord.js"
 
-import { type CacheType, type ChatInputCommandInteraction, type Client } from "discord.js"
-
-interface IEventFile {
-  invoke(interaction: ChatInputCommandInteraction<CacheType>): Promise<void>
-  NAME: string
-  ONCE: boolean
+interface IClientReady {
+  invoke(client: Client): Promise<void>
 }
 
-const loadCommand = async (client: Client, event: string): Promise<void> => {
-  const eventFile: IEventFile = await import(`${__dirname}/${event}`)
-  if (eventFile.ONCE) {
-    client.once(eventFile.NAME, async (interaction: ChatInputCommandInteraction): Promise<void> => {
-      await eventFile.invoke(interaction)
-    })
-  } else {
-    client.on(eventFile.NAME, async (interaction: ChatInputCommandInteraction): Promise<void> => {
-      await eventFile.invoke(interaction)
-    })
-  }
+interface IInteractionCreate {
+  invoke(interaction: ChatInputCommandInteraction): Promise<void>
+}
+
+interface ICommandFile {
+  create(): RESTPostAPIChatInputApplicationCommandsJSONBody
+  invoke(interaction: ChatInputCommandInteraction): Promise<void>
 }
 
 const loadCommands = async (client: Client): Promise<void> => {
-  const events: string[] = await readdir(`${__dirname}`).then((dir: string[]) => {
-    return dir.filter((file: string) => file.endsWith(".ts")).map((file) => file.slice(0, -3))
+  const clientReady: IClientReady = await import(`${import.meta.dirname}/${Events.ClientReady}.ts`)
+  client.once(Events.ClientReady, async (client: Client): Promise<void> => {
+    await clientReady.invoke(client)
   })
 
-  await Promise.all(events.map(async (event: string): Promise<void> => await loadCommand(client, event)))
+  const interactionCreate: IInteractionCreate = await import(`${import.meta.dirname}/${Events.InteractionCreate}.ts`)
+  client.on(Events.InteractionCreate, async (interaction: Interaction): Promise<void> => {
+    await interactionCreate.invoke(interaction as ChatInputCommandInteraction)
+  })
 }
 
-export default loadCommands
+export { type ICommandFile, loadCommands }

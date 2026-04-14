@@ -10,7 +10,10 @@ import { clearLoot, loadLootData } from "../../utils/database.ts"
 import { error, info } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder().setName("reload").setDescription("Reload loot table").toJSON()
+  return new SlashCommandBuilder()
+    .setName(import.meta.file.slice(0, -3))
+    .setDescription("Reload loot table")
+    .toJSON()
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
@@ -32,6 +35,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
       error(e)
       throw e
     })
+
   if (Bun.env.DEBUG) {
     info("Timer started")
   }

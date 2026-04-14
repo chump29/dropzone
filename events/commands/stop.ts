@@ -10,7 +10,10 @@ import { stopDrop } from "../../utils/loadTimer.ts"
 import { error, info } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder().setName("stop").setDescription("Stop DropZoneBot").toJSON()
+  return new SlashCommandBuilder()
+    .setName(import.meta.file.slice(0, -3))
+    .setDescription(`Stop ${Bun.env.NAME}`)
+    .toJSON()
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
@@ -22,8 +25,8 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
 
   await interaction
     .reply({
-      content: "-# > ⏹️ DropZoneBot stopped",
-      flags: MessageFlags.SuppressNotifications
+      content: `-# > ⏹️ ${Bun.env.NAME} stopped`,
+      flags: MessageFlags.Ephemeral
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
     .catch((e: any) => {

@@ -12,7 +12,10 @@ import { getAll, type IUser } from "../../utils/database.ts"
 import { error } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder().setName("leaderboard").setDescription("Show DropZoneBot leaderboard").toJSON()
+  return new SlashCommandBuilder()
+    .setName(import.meta.file.slice(0, -3))
+    .setDescription(`Show ${Bun.env.NAME} leaderboard`)
+    .toJSON()
 }
 
 const BLANK: APIEmbedField = {
@@ -23,19 +26,22 @@ const BLANK: APIEmbedField = {
 const getEmbed = async (): Promise<APIEmbedField[]> => {
   const fields: APIEmbedField[] = await getAll().then((users: IUser[]) => {
     const fields: APIEmbedField[] = []
-    fields.push(BLANK)
-    users.forEach((user: IUser) => {
-      fields.push({
-        inline: true,
-        name: user.name,
-        value: `-# $${user.points}`
-      } as APIEmbedField)
-    })
+    users
+      .filter((user: IUser) => user.points > 0)
+      .forEach((user: IUser, i: number) => {
+        fields.push({
+          inline: true,
+          name: `${i === 0 ? "👑 " : ""}${user.name}`,
+          value: `-# $${user.points}`
+        } as APIEmbedField)
+      })
     return fields
   })
-  if (!fields.length) {
+  if (fields.length) {
+    fields.unshift(BLANK)
+  } else {
     fields.push(BLANK, {
-      name: "Nothing to show",
+      name: "🚫  Nothing to show",
       value: ""
     } as APIEmbedField)
   }
@@ -52,8 +58,8 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
       flags: MessageFlags.SuppressNotifications,
       embeds: [
         new EmbedBuilder()
-          .setColor(0x78866b)
-          .setTitle("🏆  DropZoneBot Leaderboard  🏆")
+          .setColor("#78866b")
+          .setTitle(`🏆  ${Bun.env.NAME} Leaderboard  🏆`)
           .setFields(await getEmbed())
           .toJSON()
       ]

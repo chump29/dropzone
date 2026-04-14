@@ -10,14 +10,17 @@ import { checkRate } from "../../utils/checkRate.ts"
 import { error } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder().setName("info").setDescription("Information about DropZoneBot").toJSON()
+  return new SlashCommandBuilder()
+    .setName(import.meta.file.slice(0, -3))
+    .setDescription(`Information about ${Bun.env.NAME}`)
+    .toJSON()
 }
 
 const embed: EmbedBuilder = new EmbedBuilder()
-  .setColor(0x78866b)
+  .setColor("#78866b")
   .setAuthor({
     iconURL: Bun.env.LOGO_URL,
-    name: `WelcomeBot v${Bun.env.npm_package_version}`
+    name: `${Bun.env.NAME} v${Bun.env.npm_package_version}`
   })
   .setThumbnail(Bun.env.LOGO_URL)
   .setDescription("- Collect military items for cash!")

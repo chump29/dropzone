@@ -104,7 +104,7 @@ const loadLootData = async (): Promise<void> => {
       }
     })
 
-    bulkInsert((await ConvertCsvToJson.getJsonFromCsvAsync(`${__dirname}/loot.csv`)) as ILoot[])
+    bulkInsert((await ConvertCsvToJson.getJsonFromCsvAsync(`${import.meta.dirname}/loot.csv`)) as ILoot[])
 
     if (Bun.env.DEBUG) {
       info("Loot items inserted")
@@ -125,6 +125,7 @@ const loadLoot = async (): Promise<void> => {
 
   try {
     LOOT = DB.query<ILoot, []>("SELECT * FROM loot;").all()
+
     if (Bun.env.DEBUG) {
       info(`${LOOT.length} loot items loaded`)
     }
@@ -156,6 +157,7 @@ const clearLoot = async (): Promise<void> => {
 
   try {
     DB.query("DELETE FROM loot;").run()
+
     if (Bun.env.DEBUG) {
       info("Loot table cleared")
     }
@@ -215,6 +217,7 @@ const openDatabase = async (): Promise<void> => {
 
       await loadLootData()
     }
+
     if (Bun.env.DEBUG) {
       info(`Using database: ${DB_STR}`)
     }

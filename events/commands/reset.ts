@@ -13,7 +13,7 @@ import { error, info } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
-    .setName("reset")
+    .setName(import.meta.file.slice(0, -3))
     .setDescription("Reset points")
     .addUserOption(
       (option: SlashCommandUserOption): SlashCommandUserOption => option.setName("user").setDescription("User to reset")
@@ -39,7 +39,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
   await interaction
     .reply({
       content: `-# > ↩️ ${content}`,
-      flags: MessageFlags.SuppressNotifications
+      flags: MessageFlags.Ephemeral
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
     .catch((e: any) => {

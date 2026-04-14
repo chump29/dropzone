@@ -7,6 +7,7 @@ declare module "bun" {
     LOGO_PORT: number
     LOGO_SERVER: boolean
     LOGO_URL: string
+    NAME: string
     npm_package_version: string
     RATE: number
     TOKEN: string

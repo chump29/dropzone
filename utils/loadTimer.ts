@@ -94,6 +94,7 @@ const sendMessage = (): void => {
                 throw e
               })
             await updatePoints(user.displayName, points)
+
             if (Bun.env.DEBUG) {
               info(`${user.displayName} claimed ${loot.name} for $${points}`)
             }
