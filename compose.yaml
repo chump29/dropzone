@@ -1,0 +1,16 @@
+services:
+  dropzonebot:
+    container_name: dropzonebot
+    image: git.postfmly.com/admin/dropzonebot:arm64
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - TZ=America/Chicago
+    labels:
+      - wud.display.name=DropZoneBot
+      - homepage.group=Personal
+      - homepage.name=DropZoneBot
+      - homepage.icon=https://dropzonebot.postfmly.com/dropzonebot.png
+
+networks: {}

@@ -27,10 +27,6 @@ const invoke = async (client: Client): Promise<void> => {
     })
   )
   client.application.commands.set(commandsArray)
-
-  if (Bun.env.DEBUG) {
-    info(`Connected as ${client.user.displayName} (${client.user.tag})`)
-  }
 }
 
 export { invoke }

@@ -365,7 +365,7 @@ const resetPoints = async (name: string | null = null): Promise<void> => {
   }
 }
 
-const close = (): void => {
+const close = async (): Promise<void> => {
   DB?.close()
 }
 
