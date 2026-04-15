@@ -5,6 +5,8 @@ services:
     restart: unless-stopped
     ports:
       - "8001:8001"
+    volumes:
+      - db:/app/db
     environment:
       - TZ=America/Chicago
     env_file: .env
@@ -13,5 +15,8 @@ services:
       - homepage.group=Personal
       - homepage.name=DropZoneBot
       - homepage.icon=https://dropzonebot.postfmly.com/dropzonebot.png
+
+volumes:
+  db:
 
 networks: {}
