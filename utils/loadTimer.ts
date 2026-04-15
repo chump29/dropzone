@@ -25,6 +25,8 @@ let CLIENT: Client | null = null
 
 let ID: NodeJS.Timeout | null = null
 
+let STATUS: boolean = false
+
 const loadSettings = async (): Promise<void> => {
   EMOJI = (await getSetting("emoji")) ?? "💰"
   MAX_TIME = ms(((await getSetting("max")) ?? "3h") as StringValue)
@@ -134,15 +136,25 @@ const sendMessage = (): void => {
 }
 
 const startDrop = (): void => {
+  if (STATUS) {
+    return
+  }
+
   const timeout: number = getRandomNumber(MIN_TIME, MAX_TIME)
   nextDrop(timeout)
   ID = setTimeout(sendMessage, timeout)
+  STATUS = true
 }
 
 const stopDrop = (): void => {
+  if (!STATUS) {
+    return
+  }
+
   if (ID) {
     clearTimeout(ID)
   }
+  STATUS = false
 }
 
 const loadTimer = async (client: Client): Promise<void> => {
@@ -150,4 +162,4 @@ const loadTimer = async (client: Client): Promise<void> => {
   await loadSettings()
 }
 
-export { loadTimer, startDrop, stopDrop }
+export { loadTimer, STATUS, startDrop, stopDrop }
