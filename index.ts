@@ -13,7 +13,7 @@ Bun.env.DEBUG = Bun.env.IS_DEBUG === "true" ? true : false
 
 await openDatabase()
   .then(async (): Promise<void> => await loadCommands(CLIENT))
-  .then(async (): Promise<void> => await login(CLIENT))
+  .then(async (): Promise<void> => await login())
   .then(async (): Promise<void> => await loadLoot())
   .then(async (): Promise<void> => await loadTimer(CLIENT))
   .then(async (): Promise<void> => await logo())
@@ -21,5 +21,5 @@ await openDatabase()
   // biome-ignore lint/suspicious/noExplicitAny: catch all errors
   .catch(async (e: any): Promise<void> => {
     error(e)
-    await shutdown(CLIENT)
+    await shutdown()
   })

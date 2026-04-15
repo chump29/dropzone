@@ -6,10 +6,10 @@ import { SERVER } from "./logo.ts"
 
 let CLIENT: Client | null = null
 
-const shutdown = async (client: Client): Promise<void> => {
+const shutdown = async (): Promise<void> => {
   info("Shutting down...")
   await close()
-    .then(async (): Promise<void> => await client.destroy())
+    .then(async (): Promise<void> => await CLIENT?.destroy())
     .then(async (): Promise<void> => await SERVER?.stop(true))
     .then((): void => process.exit())
 }
@@ -31,25 +31,25 @@ const client = async (): Promise<Client> => {
   })
 
   process.on("SIGINT", async (): Promise<void> => {
-    if (CLIENT) {
-      await shutdown(CLIENT)
-    }
+    await shutdown()
   })
 
   process.on("SIGTERM", async (): Promise<void> => {
-    if (CLIENT) {
-      await shutdown(CLIENT)
-    }
+    await shutdown()
   })
 
   return CLIENT
 }
 
-const login = async (client: Client): Promise<void> => {
-  await client.login(Bun.env.TOKEN)
+const login = async (): Promise<void> => {
+  if (!CLIENT) {
+    throw new Error("Invalid client")
+  }
 
-  if (client.user && Bun.env.DEBUG) {
-    info(`Connected as ${client.user.displayName} (${client.user.tag})`)
+  await CLIENT.login(Bun.env.TOKEN)
+
+  if (CLIENT.user && Bun.env.DEBUG) {
+    info(`Connected as ${CLIENT.user.displayName} (${CLIENT.user.tag})`)
   }
 }
 
