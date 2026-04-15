@@ -4,8 +4,18 @@ import { close } from "./database.ts"
 import { info } from "./logger.ts"
 import { SERVER } from "./logo.ts"
 
+let CLIENT: Client | null = null
+
+const shutdown = async (client: Client): Promise<void> => {
+  info("Shutting down...")
+  await close()
+    .then(async (): Promise<void> => await client.destroy())
+    .then(async (): Promise<void> => await SERVER?.stop(true))
+    .then((): void => process.exit())
+}
+
 const client = async (): Promise<Client> => {
-  const client: Client = new Client({
+  CLIENT = new Client({
     intents: [
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMessageReactions
@@ -20,23 +30,19 @@ const client = async (): Promise<Client> => {
     }
   })
 
-  const shutdown = async (): Promise<void> => {
-    info("Shutting down...")
-    await close()
-      .then(async (): Promise<void> => await client.destroy())
-      .then(async (): Promise<void> => await SERVER?.stop(true))
-      .then((): void => process.exit())
-  }
-
   process.on("SIGINT", async (): Promise<void> => {
-    await shutdown()
+    if (CLIENT) {
+      await shutdown(CLIENT)
+    }
   })
 
   process.on("SIGTERM", async (): Promise<void> => {
-    await shutdown()
+    if (CLIENT) {
+      await shutdown(CLIENT)
+    }
   })
 
-  return client
+  return CLIENT
 }
 
 const login = async (client: Client): Promise<void> => {
@@ -47,4 +53,4 @@ const login = async (client: Client): Promise<void> => {
   }
 }
 
-export { client, login }
+export { client, login, shutdown }

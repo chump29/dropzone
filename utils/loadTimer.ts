@@ -11,6 +11,7 @@ import {
 } from "discord.js"
 
 import ms, { type StringValue } from "ms"
+import prettyMilliseconds from "pretty-ms"
 
 import { getLoot, getSetting, type ILoot, updatePoints } from "./database.ts"
 import { error, info } from "./logger.ts"
@@ -41,7 +42,7 @@ const getRandomNumber = (min: number, max: number): number => {
 
 const nextDrop = (timeout: number): void => {
   if (Bun.env.DEBUG) {
-    info(`Next drop in ${ms(timeout)}`)
+    info(`Next drop in ${prettyMilliseconds(timeout)}`)
   }
 }
 
