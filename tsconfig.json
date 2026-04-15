@@ -1,27 +1,9 @@
 {
+  "extends": "./node_modules/@postfmly/config/tsconfig",
   "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "erasableSyntaxOnly": true,
-    "module": "esnext",
-    "moduleDetection": "force",
-    "moduleResolution": "bundler",
-    "noEmit": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "esnext",
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
-    "verbatimModuleSyntax": true,
-    "lib": [
-      "ESNext"
-    ],
     "types": [
-      "bun"
+      "bun",
+      "ms"
     ]
   }
 }

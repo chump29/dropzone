@@ -2,10 +2,14 @@ import { info } from "./logger.ts"
 
 let SERVER: Bun.Server<undefined> | null = null
 
+const DEFAULT_PORT: number = 8001
+
+const PORT: number = Bun.env.LOGO_PORT ? Number(Bun.env.LOGO_PORT) : DEFAULT_PORT
+
 const logo = async (): Promise<void> => {
   if (Bun.env.LOGO_SERVER) {
     SERVER = Bun.serve({
-      port: Bun.env.LOGO_PORT ?? 8001,
+      port: PORT,
       fetch(request: Request): Response {
         if (new URL(request.url).pathname === "/dropzone.png") {
           return new Response(Bun.file("./utils/dropzone.png"))

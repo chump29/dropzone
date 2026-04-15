@@ -1,4 +1,5 @@
 import { readdir } from "fs/promises"
+import { parse } from "path"
 
 import { type Client, type RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js"
 
@@ -21,7 +22,7 @@ const invoke = async (client: Client): Promise<void> => {
       commandsArray.push(commandFile.create())
 
       if (Bun.env.DEBUG) {
-        info(`Loaded /${command} command`)
+        info(`Loaded /${parse(command).name} command`)
       }
     })
   )

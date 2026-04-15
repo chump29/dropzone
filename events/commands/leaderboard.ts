@@ -1,3 +1,5 @@
+import { parse } from "path"
+
 import {
   type APIEmbedField,
   type ChatInputCommandInteraction,
@@ -13,7 +15,7 @@ import { error } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
-    .setName(import.meta.file.slice(0, -3))
+    .setName(parse(import.meta.file).name)
     .setDescription(`Show ${Bun.env.NAME} leaderboard`)
     .toJSON()
 }

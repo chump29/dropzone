@@ -9,6 +9,7 @@ import {
   type TextChannel,
   type User
 } from "discord.js"
+
 import ms, { type StringValue } from "ms"
 
 import { getLoot, getSetting, type ILoot, updatePoints } from "./database.ts"

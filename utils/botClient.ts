@@ -13,7 +13,7 @@ const botClient = async (): Promise<Client> => {
     presence: {
       activities: [
         {
-          name: "Dropping loot",
+          name: "Dropping loot...",
           type: ActivityType.Custom
         }
       ]
