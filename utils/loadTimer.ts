@@ -48,7 +48,7 @@ const nextDrop = (timeout: number): void => {
   }
 }
 
-const dropLoot = async (): Promise<void> => {
+const dropLoot = async (dropOnly: boolean = false): Promise<void> => {
   if (!CLIENT) {
     throw Error("No client")
   }
@@ -129,10 +129,12 @@ const dropLoot = async (): Promise<void> => {
       throw e
     })
 
-  const t: number = getRandomNumber(MIN_TIME, MAX_TIME)
-  stopDrop()
-  nextDrop(t)
-  ID = setTimeout(dropLoot, t)
+  if (!dropOnly) {
+    const t: number = getRandomNumber(MIN_TIME, MAX_TIME)
+    stopDrop()
+    nextDrop(t)
+    ID = setTimeout(dropLoot, t)
+  }
 }
 
 const startDrop = (): void => {

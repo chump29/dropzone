@@ -23,7 +23,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
     return
   }
 
-  await dropLoot()
+  await dropLoot(true)
 
   await interaction
     .reply({
