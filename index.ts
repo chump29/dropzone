@@ -17,12 +17,12 @@ await openDatabase()
   .then(async (): Promise<void> => await loadLoot())
   .then(async (): Promise<void> => await loadTimer(CLIENT))
   .then(async (): Promise<void> => await logo())
+  .then((): void => info("Running..."))
   .then((): void => {
     if (Bun.env.AUTOSTART === "true") {
       startDrop()
     }
   })
-  .then((): void => info("Running..."))
   // biome-ignore lint/suspicious/noExplicitAny: catch all errors
   .catch(async (e: any): Promise<void> => {
     error(e)

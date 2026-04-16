@@ -8,13 +8,13 @@ import {
 } from "discord.js"
 
 import { checkRate } from "../../utils/checkRate.ts"
-import { stopDrop } from "../../utils/loadTimer.ts"
+import { dropLoot } from "../../utils/loadTimer.ts"
 import { error, info } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
     .setName(parse(import.meta.file).name)
-    .setDescription("Stop dropping loot")
+    .setDescription("Drop loot")
     .toJSON()
 }
 
@@ -23,11 +23,11 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
     return
   }
 
-  stopDrop()
+  await dropLoot()
 
   await interaction
     .reply({
-      content: `-# > ⏹️ ${Bun.env.NAME} stopped`,
+      content: "-# > 💰 Loot dropped",
       flags: MessageFlags.Ephemeral
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
@@ -37,7 +37,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
     })
 
   if (Bun.env.DEBUG) {
-    info("Stopped")
+    info("Loot dropped")
   }
 }
 

@@ -16,7 +16,7 @@ import { error } from "../../utils/logger.ts"
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
     .setName(parse(import.meta.file).name)
-    .setDescription(`${Bun.env.NAME} status`)
+    .setDescription("Show loot drop status")
     .toJSON()
 }
 
@@ -27,7 +27,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
 
   await interaction
     .reply({
-      content: `-# > ⏰ ${Bun.env.NAME}'s next drop is in ${
+      content: `-# > ⏰ Next loot drop is in ${
         END
           ? prettyMilliseconds(END - Date.now(), {
               verbose: true

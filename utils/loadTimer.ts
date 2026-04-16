@@ -13,7 +13,7 @@ import {
 import ms, { type StringValue } from "ms"
 import prettyMilliseconds from "pretty-ms"
 
-import { getLoot, getSetting, type ILoot, updatePoints } from "./database.ts"
+import { getLoot, type ILoot, updatePoints } from "./database.ts"
 import { error, info } from "./logger.ts"
 
 let EMOJI: string = ""
@@ -28,10 +28,10 @@ let ID: NodeJS.Timeout | null = null
 let END: number = 0
 
 const loadSettings = async (): Promise<void> => {
-  EMOJI = (await getSetting("emoji")) ?? "💰"
-  MAX_TIME = ms(((await getSetting("max")) ?? "3h") as StringValue)
-  MIN_TIME = ms(((await getSetting("min")) ?? "1h") as StringValue)
-  TIMEOUT = ms(((await getSetting("timeout")) ?? "1m") as StringValue)
+  EMOJI = Bun.env.EMOJI ?? "💰"
+  MAX_TIME = ms((Bun.env.MAX_TIME ?? "3h") as StringValue)
+  MIN_TIME = ms((Bun.env.MIN_TIME ?? "1h") as StringValue)
+  TIMEOUT = ms((Bun.env.TIMEOUT ?? "1m") as StringValue)
 
   if (Bun.env.DEBUG) {
     info("Settings loaded")
@@ -48,7 +48,7 @@ const nextDrop = (timeout: number): void => {
   }
 }
 
-const sendMessage = (): void => {
+const dropLoot = async (): Promise<void> => {
   if (!CLIENT) {
     throw Error("No client")
   }
@@ -57,7 +57,7 @@ const sendMessage = (): void => {
     throw Error("Minimum time is less than the timeout value!")
   }
 
-  CLIENT.channels
+  await CLIENT.channels
     .fetch(Bun.env.CHANNEL_ID)
     .then(async (channel: Channel | null): Promise<void | Message> => {
       if (channel) {
@@ -132,7 +132,7 @@ const sendMessage = (): void => {
   const t: number = getRandomNumber(MIN_TIME, MAX_TIME)
   stopDrop()
   nextDrop(t)
-  ID = setTimeout(sendMessage, t)
+  ID = setTimeout(dropLoot, t)
 }
 
 const startDrop = (): void => {
@@ -142,7 +142,7 @@ const startDrop = (): void => {
 
   const timeout: number = getRandomNumber(MIN_TIME, MAX_TIME)
   nextDrop(timeout)
-  ID = setTimeout(sendMessage, timeout)
+  ID = setTimeout(dropLoot, timeout)
   END = Date.now() + timeout
 }
 
@@ -162,4 +162,4 @@ const loadTimer = async (client: Client): Promise<void> => {
   await loadSettings()
 }
 
-export { END, loadTimer, startDrop, stopDrop }
+export { dropLoot, END, loadTimer, startDrop, stopDrop }

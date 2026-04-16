@@ -17,7 +17,7 @@ const invoke = async (client: Client): Promise<void> => {
 
   const commandsArray: RESTPostAPIChatInputApplicationCommandsJSONBody[] = []
   await Promise.all(
-    commands.map(async (command: string): Promise<void> => {
+    commands.sort().map(async (command: string): Promise<void> => {
       const commandFile: ICommandFile = await import(`${import.meta.dirname}/commands/${command}`)
       commandsArray.push(commandFile.create())
 

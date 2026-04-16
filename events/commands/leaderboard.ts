@@ -16,7 +16,7 @@ import { error } from "../../utils/logger.ts"
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
     .setName(parse(import.meta.file).name)
-    .setDescription(`Show ${Bun.env.NAME} leaderboard`)
+    .setDescription("Show leaderboard")
     .toJSON()
 }
 

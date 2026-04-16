@@ -6,10 +6,6 @@ import ConvertCsvToJson from "convert-csv-to-json"
 
 import { error, info } from "./logger.ts"
 
-interface IValue {
-  value: string
-}
-
 interface IPoints {
   points: number
 }
@@ -29,61 +25,6 @@ interface ILoot {
 }
 
 let DB: Database | null = null
-
-const loadSettingsData = async (): Promise<void> => {
-  if (!DB) {
-    throw Error("Database not open")
-  }
-
-  const query: Statement = DB.query<
-    IChanges,
-    {
-      key: string
-      value: string
-    }
-  >("INSERT INTO settings (key, value) VALUES ($key, $value);")
-
-  let success: boolean = query.run({
-    key: "min",
-    value: "1h"
-  }).changes
-    ? true
-    : false
-  if (!success) {
-    throw new Error("Could not insert value: min")
-  }
-  success = query.run({
-    key: "max",
-    value: "3h"
-  }).changes
-    ? true
-    : false
-  if (!success) {
-    throw new Error("Could not insert value: max")
-  }
-  success = query.run({
-    key: "timeout",
-    value: "1m"
-  }).changes
-    ? true
-    : false
-  if (!success) {
-    throw new Error("Could not insert value: timeout")
-  }
-  success = query.run({
-    key: "emoji",
-    value: "💰"
-  }).changes
-    ? true
-    : false
-  if (!success) {
-    throw new Error("Could not insert value: emoji")
-  }
-
-  if (Bun.env.DEBUG) {
-    info("Settings inserted")
-  }
-}
 
 const loadLootData = async (): Promise<void> => {
   if (!DB) {
@@ -197,14 +138,6 @@ const openDatabase = async (): Promise<void> => {
       DB.run(table)
 
       table = `
-      CREATE TABLE settings(
-        id INTEGER PRIMARY KEY,
-        key TEXT NOT NULL UNIQUE,
-        value TEXT NOT NULL
-    )`
-      DB.run(table)
-
-      table = `
       CREATE TABLE loot(
         id INTEGER PRIMARY KEY,
         max INTEGER NOT NULL,
@@ -213,39 +146,12 @@ const openDatabase = async (): Promise<void> => {
     )`
       DB.run(table)
 
-      await loadSettingsData()
-
       await loadLootData()
     }
 
     if (Bun.env.DEBUG) {
       info(`Using database: ${DB_STR}`)
     }
-    // biome-ignore lint/suspicious/noExplicitAny: catch all errors
-  } catch (e: any) {
-    error(e)
-    throw e
-  }
-}
-
-const getSetting = async (key: string): Promise<string | null> => {
-  if (!DB) {
-    throw Error("Database not open")
-  }
-
-  try {
-    const result: IValue | null = DB.query<
-      IValue,
-      {
-        key: string
-      }
-    >("SELECT value FROM settings WHERE key=$key;").get({
-      key: key
-    })
-    if (!result) {
-      return null
-    }
-    return result.value
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
   } catch (e: any) {
     error(e)
@@ -374,7 +280,6 @@ export {
   close,
   getAll,
   getLoot,
-  getSetting,
   type IChanges,
   type ILoot,
   type IUser,
