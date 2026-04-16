@@ -8,7 +8,6 @@ services:
     volumes:
       - db:/app/db
     environment:
-      - AUTOSTART=true
       - TZ=America/Chicago
     env_file: .env
     labels:
