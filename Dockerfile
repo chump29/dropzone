@@ -24,7 +24,7 @@ LABEL org.opencontainers.image.authors="Chris Post <admin@postfmly.com>" \
   org.opencontainers.image.url="https://github.com/chump29/dropzonebot"
 
 # hadolint ignore=DL3018
-RUN apk add --no-cache tzdata
+RUN apk add --no-cache tzdata sqlite
 
 COPY --from=build /app /app/
 

@@ -27,7 +27,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
 
   await interaction
     .reply({
-      content: `-# > ▶️ ${Bun.env.NAME}'s next drop is in ${
+      content: `-# > ⏰ ${Bun.env.NAME}'s next drop is in ${
         END
           ? prettyMilliseconds(END - Date.now(), {
               verbose: true
