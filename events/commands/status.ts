@@ -10,7 +10,7 @@ import {
 import prettyMilliseconds from "pretty-ms"
 
 import { checkRate } from "../../utils/checkRate.ts"
-import { STATUS } from "../../utils/loadTimer.ts"
+import { END } from "../../utils/loadTimer.ts"
 import { error } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
@@ -27,7 +27,13 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
 
   await interaction
     .reply({
-      content: `-# > ▶️ ${Bun.env.NAME}'s next drop is ${STATUS === 0 ? "N/A" : prettyMilliseconds(STATUS)}`,
+      content: `-# > ▶️ ${Bun.env.NAME}'s next drop is in ${
+        END
+          ? prettyMilliseconds(END - Date.now(), {
+              verbose: true
+            })
+          : "N/A"
+      }`,
       flags: MessageFlags.Ephemeral
     })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
