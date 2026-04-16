@@ -42,12 +42,6 @@ const getRandomNumber = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-const nextDrop = (timeout: number): void => {
-  if (Bun.env.DEBUG) {
-    info(`Next drop in ${prettyMilliseconds(timeout)}`)
-  }
-}
-
 const dropLoot = async (dropOnly: boolean = false): Promise<void> => {
   if (!CLIENT) {
     throw Error("No client")
@@ -130,10 +124,8 @@ const dropLoot = async (dropOnly: boolean = false): Promise<void> => {
     })
 
   if (!dropOnly) {
-    const t: number = getRandomNumber(MIN_TIME, MAX_TIME)
-    stopDrop()
-    nextDrop(t)
-    ID = setTimeout(dropLoot, t)
+    END = 0
+    startDrop()
   }
 }
 
@@ -143,9 +135,12 @@ const startDrop = (): void => {
   }
 
   const timeout: number = getRandomNumber(MIN_TIME, MAX_TIME)
-  nextDrop(timeout)
   ID = setTimeout(dropLoot, timeout)
   END = Date.now() + timeout
+
+  if (Bun.env.DEBUG) {
+    info(`Next drop in ${prettyMilliseconds(timeout)}`)
+  }
 }
 
 const stopDrop = (): void => {
