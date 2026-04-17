@@ -2,7 +2,9 @@ import { parse } from "path"
 
 import {
   type ChatInputCommandInteraction,
+  InteractionContextType,
   MessageFlags,
+  PermissionFlagsBits,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
 } from "discord.js"
@@ -14,6 +16,8 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
     .setName(parse(import.meta.file).name)
     .setDescription(`Ping ${Bun.env.NAME}`)
+    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+    .setContexts(InteractionContextType.Guild)
     .toJSON()
 }
 

@@ -9,7 +9,6 @@ import {
   type User
 } from "discord.js"
 
-import { checkRate } from "../../utils/checkRate.ts"
 import { resetPoints } from "../../utils/database.ts"
 import { error, info } from "../../utils/logger.ts"
 
@@ -24,10 +23,6 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  if (await checkRate(interaction)) {
-    return
-  }
-
   let content: string = "Reset all points"
 
   const user: User | null = interaction.options.getUser("user")

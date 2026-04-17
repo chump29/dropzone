@@ -9,7 +9,6 @@ import {
 
 import prettyMilliseconds from "pretty-ms"
 
-import { checkRate } from "../../utils/checkRate.ts"
 import { END } from "../../utils/loadTimer.ts"
 import { error } from "../../utils/logger.ts"
 
@@ -21,10 +20,6 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  if (await checkRate(interaction)) {
-    return
-  }
-
   await interaction
     .reply({
       content: `-# > ⏰ Next loot drop is in ${

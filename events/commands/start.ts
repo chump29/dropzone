@@ -7,7 +7,6 @@ import {
   SlashCommandBuilder
 } from "discord.js"
 
-import { checkRate } from "../../utils/checkRate.ts"
 import { startDrop } from "../../utils/loadTimer.ts"
 import { error, info } from "../../utils/logger.ts"
 
@@ -19,10 +18,6 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  if (await checkRate(interaction)) {
-    return
-  }
-
   startDrop()
 
   await interaction

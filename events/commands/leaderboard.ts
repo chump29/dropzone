@@ -4,7 +4,9 @@ import {
   type APIEmbedField,
   type ChatInputCommandInteraction,
   EmbedBuilder,
+  InteractionContextType,
   MessageFlags,
+  PermissionFlagsBits,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
 } from "discord.js"
@@ -17,6 +19,8 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
     .setName(parse(import.meta.file).name)
     .setDescription("Show leaderboard")
+    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+    .setContexts(InteractionContextType.Guild)
     .toJSON()
 }
 
