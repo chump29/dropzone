@@ -12,7 +12,7 @@ const logo = async (): Promise<void> => {
       port: PORT,
       fetch(request: Request): Response {
         if (new URL(request.url).pathname === "/dropzonebot.png") {
-          return new Response(Bun.file("./utils/dropzonebot.png"))
+          return new Response(Bun.file(`${import.meta.dirname}/images/dropzonebot.png`))
         }
         return new Response("Not Found", {
           status: 404
