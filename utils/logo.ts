@@ -11,8 +11,14 @@ const logo = async (): Promise<void> => {
     SERVER = Bun.serve({
       port: PORT,
       fetch(request: Request): Response {
-        if (new URL(request.url).pathname === "/dropzonebot.png") {
-          return new Response(Bun.file(`${import.meta.dirname}/images/dropzonebot.png`))
+        const req: string = new URL(request.url).pathname
+        const logo: string = Bun.env.LOGO_URL ? new URL(Bun.env.LOGO_URL).pathname : ""
+        if (logo.length && req === logo) {
+          return new Response(Bun.file(`${import.meta.dirname}/images${logo}`))
+        } else if (req === "/favicon.ico") {
+          return new Response(null, {
+            status: 204
+          })
         }
         return new Response("Not Found", {
           status: 404
