@@ -3,6 +3,7 @@ import { parse } from "path"
 import {
   type ChatInputCommandInteraction,
   MessageFlags,
+  PermissionFlagsBits,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder,
   type SlashCommandUserOption,
@@ -19,6 +20,7 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
     .addUserOption(
       (option: SlashCommandUserOption): SlashCommandUserOption => option.setName("user").setDescription("User to reset")
     )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .toJSON()
 }
 

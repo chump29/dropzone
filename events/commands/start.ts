@@ -3,6 +3,7 @@ import { parse } from "path"
 import {
   type ChatInputCommandInteraction,
   MessageFlags,
+  PermissionFlagsBits,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
 } from "discord.js"
@@ -14,6 +15,7 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
     .setName(parse(import.meta.file).name)
     .setDescription("Start dropping loot")
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .toJSON()
 }
 
