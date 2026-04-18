@@ -98,7 +98,7 @@
 
     "commander": ["commander@14.0.3", "https://npm.postfmly.com/commander/-/commander-14.0.3.tgz", {}, "sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw=="],
 
-    "convert-csv-to-json": ["convert-csv-to-json@4.31.0", "https://npm.postfmly.com/convert-csv-to-json/-/convert-csv-to-json-4.31.0.tgz", {}, "sha512-Hse/JX7qBnhE1IZIRGGr7EvpL3a7qqToR+xlI0HZjjctjBYApvhNQJ5CgxZIaEgcrsmzyVB9WMCAqgZ9xJQXng=="],
+    "convert-csv-to-json": ["convert-csv-to-json@4.36.0", "https://npm.postfmly.com/convert-csv-to-json/-/convert-csv-to-json-4.36.0.tgz", {}, "sha512-E3J4tnEKi4v5ohuBlcCCsP9La7oMhycNm8hFOf1C9NwDZk4HSWCy8kt/jOR1SHWdeBti7b9+2erqQP5MCC6ptg=="],
 
     "date-and-time": ["date-and-time@4.4.0", "https://npm.postfmly.com/date-and-time/-/date-and-time-4.4.0.tgz", {}, "sha512-foXRmpxgnF6JApwYcYDXfXXA0V3A/5ITsCfUXBxhfNekZmv1few84MQxkgBK6lVr1vENcGHY4hzlJJwJJ5tnWA=="],
 

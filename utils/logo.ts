@@ -9,6 +9,7 @@ const PORT: number = Bun.env.LOGO_PORT ? Number(Bun.env.LOGO_PORT) : DEFAULT_POR
 const logo = async (): Promise<void> => {
   if (Bun.env.LOGO_SERVER === "true") {
     SERVER = Bun.serve({
+      development: Bun.env.NODE_ENV !== "production",
       port: PORT,
       fetch(request: Request): Response {
         const req: string = new URL(request.url).pathname
