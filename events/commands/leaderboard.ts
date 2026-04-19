@@ -35,13 +35,20 @@ const getEmbed = async (): Promise<APIEmbedField[]> => {
   await getAll()
     .then((users: IUser[]): IUser[] => users.filter((user: IUser): boolean => user.points > 0))
     .then((users: IUser[]): void => {
-      users.forEach((user: IUser, i: number) => {
+      if (!users.length) {
         fields.push({
-          inline: true,
-          name: `${i === 0 ? "👑 " : ""}${user.name}`,
-          value: `-# $${user.points}`
+          name: "🚫  Nothing to show",
+          value: ""
         } as APIEmbedField)
-      })
+      } else {
+        users.forEach((user: IUser, i: number) => {
+          fields.push({
+            inline: true,
+            name: `${i === 0 ? "👑 " : ""}${user.name}`,
+            value: `-# $${user.points}`
+          } as APIEmbedField)
+        })
+      }
     })
   return fields
 }

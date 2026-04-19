@@ -93,13 +93,7 @@ const getLoot = async (): Promise<ILoot> => {
   }
 
   try {
-    const loot: ILoot | undefined = LOOT[Math.floor(Math.random() * LOOT_COUNT)]
-
-    if (!loot) {
-      throw new Error("Loot not found")
-    }
-
-    return loot
+    return LOOT[Math.floor(Math.random() * LOOT_COUNT)] as ILoot
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
   } catch (e: any) {
     error(e)
