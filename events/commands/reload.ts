@@ -8,7 +8,7 @@ import {
   SlashCommandBuilder
 } from "discord.js"
 
-import { clearLoot, loadLootData } from "../../utils/database.ts"
+import { clearLoot, loadLoot, loadLootData } from "../../utils/database.ts"
 import { error, info } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
@@ -20,9 +20,9 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  await clearLoot().then(async (): Promise<void> => {
-    await loadLootData()
-  })
+  await clearLoot()
+    .then(async (): Promise<void> => await loadLootData())
+    .then(async (): Promise<void> => await loadLoot())
 
   await interaction
     .reply({

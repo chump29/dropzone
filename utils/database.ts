@@ -15,10 +15,30 @@ let DB: SQLiteBunDatabase | null = null
 let LOOT: ILoot[] = []
 let LOOT_COUNT: number = 0
 
+const clearLoot = async (): Promise<void> => {
+  if (!DB) {
+    throw Error("Database not open")
+  }
+
+  try {
+    await DB.delete(loot)
+
+    if (Bun.env.DEBUG) {
+      info("Loot table cleared")
+    }
+    // biome-ignore lint/suspicious/noExplicitAny: catch all errors
+  } catch (e: any) {
+    error(e)
+    throw e
+  }
+}
+
 const loadLootData = async (): Promise<void> => {
   if (!DB) {
     throw Error("Database not open")
   }
+
+  await clearLoot()
 
   try {
     const tx = DB.insert(loot)
@@ -88,24 +108,6 @@ const getLoot = async (): Promise<ILoot> => {
   }
 }
 
-const clearLoot = async (): Promise<void> => {
-  if (!DB) {
-    throw Error("Database not open")
-  }
-
-  try {
-    await DB.delete(loot)
-
-    if (Bun.env.DEBUG) {
-      info("Loot table cleared")
-    }
-    // biome-ignore lint/suspicious/noExplicitAny: catch all errors
-  } catch (e: any) {
-    error(e)
-    throw e
-  }
-}
-
 const openDatabase = async (): Promise<void> => {
   try {
     await mkdir(Bun.env.DB_PATH, {
@@ -124,6 +126,7 @@ const openDatabase = async (): Promise<void> => {
     DB.run("PRAGMA wal_checkpoint(TRUNCATE);")
 
     try {
+      await DB.select().from(loot)
       await DB.select().from(users)
     } catch {
       if (Bun.env.DEBUG) {
