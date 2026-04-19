@@ -27,10 +27,11 @@ const getFields = async (): Promise<APIEmbedField[]> => {
   return await listLoot().then((loot: ILoot[]): APIEmbedField[] => {
     const fields: APIEmbedField[] = []
     loot.forEach((item: ILoot) => {
+      const cost: string = item.min === item.max ? item.min.toString() : `${item.min} - $${item.max}`
       fields.push({
         inline: true,
         name: item.name,
-        value: `-# Min: ${item.min}  Max: ${item.max}`
+        value: `-# $${cost}`
       } as APIEmbedField)
     })
     return fields

@@ -40,6 +40,9 @@ const loadSettings = async (): Promise<void> => {
 }
 
 const getRandomNumber = (min: number, max: number): number => {
+  if (max < min) {
+    max = min
+  }
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
