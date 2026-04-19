@@ -112,7 +112,7 @@ const listLoot = async (): Promise<ILoot[]> => {
     throw Error("Loot not found")
   }
 
-  return LOOT
+  return LOOT.toSorted((a: ILoot, b: ILoot) => a.min - b.min)
 }
 
 const openDatabase = async (): Promise<void> => {
