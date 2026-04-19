@@ -26,30 +26,23 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const getEmbed = async (): Promise<APIEmbedField[]> => {
-  const fields: APIEmbedField[] = await getAll().then((users: IUser[]) => {
-    const fields: APIEmbedField[] = [
-      {
-        name: "_ _",
-        value: ""
-      } as APIEmbedField
-    ]
-    users
-      .filter((user: IUser) => user.points > 0)
-      .forEach((user: IUser, i: number) => {
+  const fields: APIEmbedField[] = [
+    {
+      name: "_ _",
+      value: ""
+    } as APIEmbedField
+  ]
+  await getAll()
+    .then((users: IUser[]): IUser[] => users.filter((user: IUser): boolean => user.points > 0))
+    .then((users: IUser[]): void => {
+      users.forEach((user: IUser, i: number) => {
         fields.push({
           inline: true,
           name: `${i === 0 ? "👑 " : ""}${user.name}`,
           value: `-# $${user.points}`
         } as APIEmbedField)
       })
-    return fields
-  })
-  if (!fields.length) {
-    fields.push({
-      name: "🚫  Nothing to show",
-      value: ""
-    } as APIEmbedField)
-  }
+    })
   return fields
 }
 

@@ -63,11 +63,7 @@ const dropLoot = async (dropOnly: boolean = false): Promise<void> => {
           content: "✯ 𝕃𝕆𝕆𝕋 𝔻ℝ𝕆ℙ ✯", // cspell: disable-line
           flags: MessageFlags.SuppressNotifications
         }
-        // biome-ignore lint/suspicious/noExplicitAny: catch all errors
-        const message: void | Message = await (channel as TextChannel).send(options).catch((e: any) => {
-          error(e)
-          throw e
-        })
+        const message: void | Message = await (channel as TextChannel).send(options)
         if (message) {
           await message.react(EMOJI)
 
@@ -88,13 +84,7 @@ const dropLoot = async (dropOnly: boolean = false): Promise<void> => {
               content: `-# > **Congratulations, \`${user.displayName}\`!  ✨  You found \`${loot.name}\` for \`$${points}\`**`,
               flags: MessageFlags.SuppressNotifications
             }
-            await (channel as TextChannel)
-              .send(options)
-              // biome-ignore lint/suspicious/noExplicitAny: catch all errors
-              .catch((e: any) => {
-                error(e)
-                throw e
-              })
+            await (channel as TextChannel).send(options)
             await updatePoints(user.displayName, points)
 
             if (Bun.env.DEBUG) {
@@ -108,11 +98,7 @@ const dropLoot = async (dropOnly: boolean = false): Promise<void> => {
                 content: "-# > Too slow.",
                 flags: MessageFlags.SuppressNotifications
               }
-              // biome-ignore lint/suspicious/noExplicitAny: catch all errors
-              await (channel as TextChannel).send(options).catch((e: any) => {
-                error(e)
-                throw e
-              })
+              await (channel as TextChannel).send(options)
             }
             await message.reactions.removeAll()
           })

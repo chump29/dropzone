@@ -7,7 +7,7 @@
 ![Biome](https://img.shields.io/badge/Biome-^2.4.12-informational?style=plastic&logo=biome) &nbsp;
 ![Bun](https://img.shields.io/badge/Bun-~1.3.12-informational?style=plastic&logo=bun) &nbsp;
 ![discord.js](https://img.shields.io/badge/discord.js-^14.26.3-informational?style=plastic&logo=discord.js) &nbsp;
-![Drizzle](https://img.shields.io/badge/Drizzle-^1.0.0--beta.9-informational?style=plastic&logo=drizzle) &nbsp;
+![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--beta.22-informational?style=plastic&logo=drizzle) &nbsp;
 ![SQLite](https://img.shields.io/badge/SQLite-3.49.2-informational?style=plastic&logo=sqlite)
 
 ![CodeQL](https://github.com/chump29/dropzonebot/workflows/CodeQL/badge.svg) &nbsp;
