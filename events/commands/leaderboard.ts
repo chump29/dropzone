@@ -25,14 +25,14 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
     .toJSON()
 }
 
-const BLANK: APIEmbedField = {
-  name: "_ _",
-  value: ""
-}
-
 const getEmbed = async (): Promise<APIEmbedField[]> => {
   const fields: APIEmbedField[] = await getAll().then((users: IUser[]) => {
-    const fields: APIEmbedField[] = []
+    const fields: APIEmbedField[] = [
+      {
+        name: "_ _",
+        value: ""
+      } as APIEmbedField
+    ]
     users
       .filter((user: IUser) => user.points > 0)
       .forEach((user: IUser, i: number) => {
@@ -44,10 +44,8 @@ const getEmbed = async (): Promise<APIEmbedField[]> => {
       })
     return fields
   })
-  if (fields.length) {
-    fields.unshift(BLANK)
-  } else {
-    fields.push(BLANK, {
+  if (!fields.length) {
+    fields.push({
       name: "🚫  Nothing to show",
       value: ""
     } as APIEmbedField)

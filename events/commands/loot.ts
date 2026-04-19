@@ -25,7 +25,12 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 
 const getFields = async (): Promise<APIEmbedField[]> => {
   return await listLoot().then((loot: ILoot[]): APIEmbedField[] => {
-    const fields: APIEmbedField[] = []
+    const fields: APIEmbedField[] = [
+      {
+        name: "_ _",
+        value: ""
+      } as APIEmbedField
+    ]
     loot.forEach((item: ILoot) => {
       const cost: string = item.min === item.max ? item.min.toString() : `${item.min} - $${item.max}`
       fields.push({
