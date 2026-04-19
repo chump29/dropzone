@@ -93,7 +93,6 @@
 |    Lint ENV    |  `bun run lint:env`  |   `bun lint:env`   |
 |   Build DEV    |    `bun run dev`     |     `bun dev`      |
 |   Build PROD   |    `bun run prod`    |     `bun prod`     |
-|  Generate DB   |     `bun run db`     |      `bun db`      |
 
 #### Docker Deployment:
 

@@ -5,7 +5,6 @@ import { Database } from "bun:sqlite"
 import ConvertCsvToJson from "convert-csv-to-json"
 import { desc, eq, sql } from "drizzle-orm"
 import { drizzle, type SQLiteBunDatabase } from "drizzle-orm/bun-sqlite"
-import { migrate } from "drizzle-orm/bun-sqlite/migrator"
 
 import { type ILoot, type IUser, loot, type lootType, users } from "../db/schema.ts"
 import { error, info } from "./logger.ts"
@@ -133,9 +132,22 @@ const openDatabase = async (): Promise<void> => {
         info("Creating tables...")
       }
 
-      migrate(DB, {
-        migrationsFolder: "./db"
-      })
+      let table: string = `
+	      CREATE TABLE users(
+	        id INTEGER PRIMARY KEY,
+	        name TEXT NOT NULL UNIQUE,
+	        points INTEGER DEFAULT 0
+	      )`
+      SQLITE.run(table)
+
+      table = `
+	      CREATE TABLE loot(
+	        id INTEGER PRIMARY KEY,
+	        max INTEGER NOT NULL,
+	        min INTEGER NOT NULL,
+	        name TEXT NOT NULL UNIQUE
+	    )`
+      SQLITE.run(table)
 
       await loadLootData()
     }

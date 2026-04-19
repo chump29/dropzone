@@ -24,7 +24,6 @@
   "scripts": {
     "clean": "rimraf node_modules bun.lock",
     "clean:db": "rimraf db/dropzonebot.db",
-    "db": "bunx drizzle-kit generate",
     "dev": "bun --watch run index.ts",
     "preinstall": "bunx only-allow bun",
     "postinstall": "config-init",
@@ -56,7 +55,6 @@
     "@types/bun": "^1.3.12",
     "@types/ms": "^2.1.0",
     "@types/node": "^25.6.0",
-    "drizzle-kit": "^1.0.0-beta.9-e89174b",
     "globals": "^17.5.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
