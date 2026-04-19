@@ -1,0 +1,125 @@
+{
+  "dialect": "sqlite",
+  "id": "46f26f3d-428c-4e6b-8119-9672b0406bbb",
+  "renames": [],
+  "version": "7",
+  "ddl": [
+    {
+      "entityType": "tables",
+      "name": "loot"
+    },
+    {
+      "entityType": "tables",
+      "name": "users"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "id",
+      "notNull": false,
+      "table": "loot",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "max",
+      "notNull": true,
+      "table": "loot",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "min",
+      "notNull": true,
+      "table": "loot",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "name",
+      "notNull": true,
+      "table": "loot",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "id",
+      "notNull": false,
+      "table": "users",
+      "type": "integer"
+    },
+    {
+      "autoincrement": false,
+      "default": null,
+      "entityType": "columns",
+      "generated": null,
+      "name": "name",
+      "notNull": true,
+      "table": "users",
+      "type": "text"
+    },
+    {
+      "autoincrement": false,
+      "default": "0",
+      "entityType": "columns",
+      "generated": null,
+      "name": "points",
+      "notNull": false,
+      "table": "users",
+      "type": "integer"
+    },
+    {
+      "entityType": "pks",
+      "name": "loot_pk",
+      "nameExplicit": false,
+      "table": "loot",
+      "columns": [
+        "id"
+      ]
+    },
+    {
+      "entityType": "pks",
+      "name": "users_pk",
+      "nameExplicit": false,
+      "table": "users",
+      "columns": [
+        "id"
+      ]
+    },
+    {
+      "entityType": "uniques",
+      "name": "loot_name_unique",
+      "nameExplicit": false,
+      "table": "loot",
+      "columns": [
+        "name"
+      ]
+    },
+    {
+      "entityType": "uniques",
+      "name": "users_name_unique",
+      "nameExplicit": false,
+      "table": "users",
+      "columns": [
+        "name"
+      ]
+    }
+  ],
+  "prevIds": [
+    "00000000-0000-0000-0000-000000000000"
+  ]
+}

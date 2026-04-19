@@ -3,9 +3,12 @@
 !.env
 !.env.production
 !bun.lock
+!db/
 !events/
 !utils/
 !healthcheck.sh
 !index.ts
 !package.json
 !tsconfig.json
+
+db/dropzonebot.db

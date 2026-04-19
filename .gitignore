@@ -1,6 +1,4 @@
 .env.local
 .vscode/
-db/*
+dropzonebot.db
 node_modules/
-
-!db/schema.ts
