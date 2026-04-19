@@ -14,7 +14,7 @@ services:
       - wud.display.name=DropZoneBot
       - homepage.group=Personal
       - homepage.name=DropZoneBot
-      - homepage.icon=https://dropzonebot.postfmly.com/dropzonebot.png
+      - homepage.icon=https://dropzonebot.postfmly.com/dropzonebot.webp
 
 volumes:
   db:

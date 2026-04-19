@@ -1,30 +1,19 @@
 import { mkdir } from "fs/promises"
 
-import { Database, type Statement } from "bun:sqlite"
+import { Database } from "bun:sqlite"
 
 import ConvertCsvToJson from "convert-csv-to-json"
+import { desc, eq, sql } from "drizzle-orm"
+import { drizzle, type SQLiteBunDatabase } from "drizzle-orm/bun-sqlite"
+import { migrate } from "drizzle-orm/bun-sqlite/migrator"
 
+import { type ILoot, type IUser, loot, type lootType, users } from "../db/schema.ts"
 import { error, info } from "./logger.ts"
 
-interface IPoints {
-  points: number
-}
-
-interface IChanges {
-  changes: number
-}
-
-interface IUser extends IPoints {
-  name: string
-}
-
-interface ILoot {
-  max: number
-  min: number
-  name: string
-}
-
-let DB: Database | null = null
+let SQLITE: Database | null = null
+let DB: SQLiteBunDatabase | null = null
+let LOOT: ILoot[] = []
+let LOOT_COUNT: number = 0
 
 const loadLootData = async (): Promise<void> => {
   if (!DB) {
@@ -32,20 +21,23 @@ const loadLootData = async (): Promise<void> => {
   }
 
   try {
-    const query: Statement = DB.query<ILoot, []>("INSERT INTO loot (max, min, name) VALUES ($max, $min, $name);")
+    const tx = DB.insert(loot)
+      .values({
+        max: sql.placeholder("max"),
+        min: sql.placeholder("min"),
+        name: sql.placeholder("name")
+      })
+      .prepare()
 
-    const bulkInsert: {
-      (loot: ILoot[]): void
-      deferred: (loot: ILoot[]) => void
-      immediate: (loot: ILoot[]) => void
-      exclusive: (loot: ILoot[]) => void
-    } = DB.transaction((loot: ILoot[]) => {
-      for (const item of loot) {
-        query.run(item)
+    await ConvertCsvToJson.getJsonFromCsvAsync(`${import.meta.dirname}/loot.csv`).then(
+      async (loot: lootType[]): Promise<void> => {
+        await Promise.all(
+          loot.map(async (item: lootType): Promise<void> => {
+            return tx.run(item)
+          })
+        )
       }
-    })
-
-    bulkInsert((await ConvertCsvToJson.getJsonFromCsvAsync(`${import.meta.dirname}/loot.csv`)) as ILoot[])
+    )
 
     if (Bun.env.DEBUG) {
       info("Loot items inserted")
@@ -57,18 +49,17 @@ const loadLootData = async (): Promise<void> => {
   }
 }
 
-let LOOT: ILoot[] = []
-
 const loadLoot = async (): Promise<void> => {
   if (!DB) {
     throw Error("Database not open")
   }
 
   try {
-    LOOT = DB.query<ILoot, []>("SELECT * FROM loot;").all()
+    LOOT = await DB.select().from(loot)
+    LOOT_COUNT = await DB.$count(loot)
 
     if (Bun.env.DEBUG) {
-      info(`${LOOT.length} loot items loaded`)
+      info(`${LOOT_COUNT} loot items loaded`)
     }
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
   } catch (e: any) {
@@ -78,12 +69,18 @@ const loadLoot = async (): Promise<void> => {
 }
 
 const getLoot = async (): Promise<ILoot> => {
-  if (!DB) {
-    throw Error("Database not open")
+  if (!LOOT) {
+    throw Error("Loot not loaded")
   }
 
   try {
-    return LOOT[Math.floor(Math.random() * LOOT.length)] as ILoot
+    const loot: ILoot | undefined = LOOT[Math.floor(Math.random() * LOOT_COUNT)]
+
+    if (!loot) {
+      throw new Error("Loot not found")
+    }
+
+    return loot
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
   } catch (e: any) {
     error(e)
@@ -97,7 +94,7 @@ const clearLoot = async (): Promise<void> => {
   }
 
   try {
-    DB.query("DELETE FROM loot;").run()
+    await DB.delete(loot)
 
     if (Bun.env.DEBUG) {
       info("Loot table cleared")
@@ -114,37 +111,28 @@ const openDatabase = async (): Promise<void> => {
     await mkdir(Bun.env.DB_PATH, {
       recursive: true
     })
+
     const DB_STR: string = `${Bun.env.DB_PATH}${Bun.env.DB_NAME}`
-    DB = new Database(DB_STR, {
+    SQLITE = new Database(DB_STR, {
       create: true,
       strict: true
+    })
+    DB = drizzle({
+      client: SQLITE
     })
     DB.run("PRAGMA journal_mode = WAL;")
     DB.run("PRAGMA wal_checkpoint(TRUNCATE);")
 
     try {
-      DB.query("SELECT 1 FROM users").run()
+      await DB.select().from(users)
     } catch {
       if (Bun.env.DEBUG) {
         info("Creating tables...")
       }
 
-      let table: string = `
-      CREATE TABLE users(
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL UNIQUE,
-        points INTEGER DEFAULT 0
-      )`
-      DB.run(table)
-
-      table = `
-      CREATE TABLE loot(
-        id INTEGER PRIMARY KEY,
-        max INTEGER NOT NULL,
-        min INTEGER NOT NULL,
-        name TEXT NOT NULL UNIQUE
-    )`
-      DB.run(table)
+      migrate(DB, {
+        migrationsFolder: "./db"
+      })
 
       await loadLootData()
     }
@@ -165,58 +153,17 @@ const updatePoints = async (name: string, points: number): Promise<void> => {
   }
 
   try {
-    let success: boolean = DB.query<
-      boolean,
-      {
-        name: string
-      }
-    >("SELECT 1 FROM users WHERE name=$name;").get({
-      name: name
-    })
-      ? true
-      : false
-    if (!success) {
-      success = DB.query<
-        IChanges,
-        {
-          name: string
-          points: number
-        }
-      >("INSERT INTO users (name, points) VALUES ($name, $points);").run({
+    await DB.insert(users)
+      .values({
         name: name,
         points: points
-      }).changes
-        ? true
-        : false
-      if (!success) {
-        throw new Error(`Could not insert user: ${name}`)
-      }
-    } else {
-      const pts: number =
-        DB.query<
-          IPoints,
-          {
-            name: string
-          }
-        >("SELECT points FROM users WHERE name=$name;").get({
-          name: name
-        })?.points ?? 0
-      const success: boolean = DB.query<
-        IChanges,
-        {
-          points: number
-          name: string
+      })
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          points: points
         }
-      >("UPDATE users SET points = $points WHERE name=$name;").run({
-        name: name,
-        points: pts + points
-      }).changes
-        ? true
-        : false
-      if (!success) {
-        throw new Error(`Could not update user: ${name}`)
-      }
-    }
+      })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
   } catch (e: any) {
     error(e)
@@ -230,7 +177,7 @@ const getAll = async (): Promise<IUser[]> => {
   }
 
   try {
-    return DB.query<IUser, []>("SELECT * FROM users ORDER BY points DESC;").all()
+    return await DB.select().from(users).orderBy(desc(users.points))
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
   } catch (e: any) {
     error(e)
@@ -244,25 +191,13 @@ const resetPoints = async (name: string | null = null): Promise<void> => {
   }
 
   try {
+    const tx = DB.update(users).set({
+      points: 0
+    })
     if (name) {
-      const success: boolean = DB.query<
-        IUser,
-        {
-          name: string
-        }
-      >("UPDATE users SET points = 0 WHERE name = $name;").run({
-        name: name
-      }).changes
-        ? true
-        : false
-      if (!success) {
-        throw new Error(`Could not reset all points for user: ${name}`)
-      }
+      tx.where(eq(users.name, name)).run()
     } else {
-      const success: boolean = DB.query<IUser, []>("UPDATE users SET points = 0;").run().changes ? true : false
-      if (!success) {
-        throw new Error("Could not reset all points")
-      }
+      tx.run()
     }
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
   } catch (e: any) {
@@ -272,20 +207,7 @@ const resetPoints = async (name: string | null = null): Promise<void> => {
 }
 
 const close = async (): Promise<void> => {
-  DB?.close()
+  SQLITE?.close()
 }
 
-export {
-  clearLoot,
-  close,
-  getAll,
-  getLoot,
-  type IChanges,
-  type ILoot,
-  type IUser,
-  loadLoot,
-  loadLootData,
-  openDatabase,
-  resetPoints,
-  updatePoints
-}
+export { clearLoot, close, getAll, getLoot, loadLoot, loadLootData, openDatabase, resetPoints, updatePoints }

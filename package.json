@@ -23,9 +23,10 @@
   "module": "index.ts",
   "scripts": {
     "clean": "rimraf node_modules bun.lock",
-    "clean:db": "rimraf db",
+    "clean:db": "rimraf db/dropzonebot.db",
+    "db": "bunx drizzle-kit generate",
     "dev": "bun --watch run index.ts",
-    "preinstall": "npx only-allow bun",
+    "preinstall": "bunx only-allow bun",
     "postinstall": "config-init",
     "lint": "bun run lint:biome && bun run lint:env",
     "lint:biome": "biome check --write --verbose",
@@ -43,6 +44,7 @@
     "date-and-time": "^4.4.0",
     "discord.js": "^14.26.3",
     "discord.js-rate-limiter": "^1.3.2",
+    "drizzle-orm": "^1.0.0-beta.9-e89174b",
     "ms": "^2.1.3",
     "pretty-ms": "^9.3.0",
     "recolors": "^1.0.0"
@@ -54,6 +56,7 @@
     "@types/bun": "^1.3.12",
     "@types/ms": "^2.1.0",
     "@types/node": "^25.6.0",
+    "drizzle-kit": "^1.0.0-beta.9-e89174b",
     "globals": "^17.5.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
