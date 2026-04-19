@@ -4,6 +4,7 @@
 !.env.production
 !bun.lock
 !db/
+!drizzle.config.ts
 !events/
 !utils/
 !healthcheck.sh
