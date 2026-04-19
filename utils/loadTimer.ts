@@ -13,7 +13,8 @@ import {
 import ms, { type StringValue } from "ms"
 import prettyMilliseconds from "pretty-ms"
 
-import { getLoot, type ILoot, updatePoints } from "./database.ts"
+import { type ILoot } from "../db/schema.ts"
+import { getLoot, updatePoints } from "./database.ts"
 import { error, info } from "./logger.ts"
 
 let EMOJI: string = ""

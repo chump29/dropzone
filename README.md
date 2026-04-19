@@ -35,6 +35,7 @@
 |    Drop Loot     |     `/drop`     | Administrator |
 |       Info       |     `/info`     | SendMessages  |
 |   Leaderboard    | `/leaderboard`  | SendMessages  |
+|    List Loot     |     `/loot`     | SendMessages  |
 |       Ping       |     `/ping`     | SendMessages  |
 |    Reload DB     |    `/reload`    | Administrator |
 |   Reset Score    |    `/reset`     | Administrator |

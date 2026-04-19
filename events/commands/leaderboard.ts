@@ -11,8 +11,9 @@ import {
   SlashCommandBuilder
 } from "discord.js"
 
+import { type IUser } from "../../db/schema.ts"
 import { checkRate } from "../../utils/checkRate.ts"
-import { getAll, type IUser } from "../../utils/database.ts"
+import { getAll } from "../../utils/database.ts"
 import { error } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {

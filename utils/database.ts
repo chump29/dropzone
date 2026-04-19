@@ -107,6 +107,14 @@ const getLoot = async (): Promise<ILoot> => {
   }
 }
 
+const listLoot = async (): Promise<ILoot[]> => {
+  if (!LOOT) {
+    throw Error("Loot not found")
+  }
+
+  return LOOT
+}
+
 const openDatabase = async (): Promise<void> => {
   try {
     await mkdir(Bun.env.DB_PATH, {
@@ -136,7 +144,7 @@ const openDatabase = async (): Promise<void> => {
 	      CREATE TABLE users(
 	        id INTEGER PRIMARY KEY,
 	        name TEXT NOT NULL UNIQUE,
-	        points INTEGER DEFAULT 0
+	        points INTEGER NOT NULL
 	      )`
       SQLITE.run(table)
 
@@ -225,4 +233,4 @@ const close = async (): Promise<void> => {
   SQLITE?.close()
 }
 
-export { clearLoot, close, getAll, getLoot, loadLoot, loadLootData, openDatabase, resetPoints, updatePoints }
+export { clearLoot, close, getAll, getLoot, listLoot, loadLoot, loadLootData, openDatabase, resetPoints, updatePoints }
