@@ -176,10 +176,13 @@ const updatePoints = async (name: string, points: number): Promise<void> => {
         points: points
       })
       .onConflictDoUpdate({
-        target: users.id,
         set: {
           points: points
-        }
+        },
+        target: [
+          users.id,
+          users.name
+        ]
       })
     // biome-ignore lint/suspicious/noExplicitAny: catch all errors
   } catch (e: any) {
