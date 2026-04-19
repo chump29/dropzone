@@ -87,7 +87,7 @@ const loadLoot = async (): Promise<void> => {
   }
 }
 
-const getLoot = async (): Promise<ILoot> => {
+const getLoot = (): ILoot => {
   if (!LOOT) {
     throw Error("Loot not loaded")
   }

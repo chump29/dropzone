@@ -78,7 +78,7 @@ const dropLoot = async (dropOnly: boolean = false): Promise<void> => {
           })
 
           collector.on("collect", async (_: MessageReaction, user: User): Promise<void> => {
-            const loot: ILoot = await getLoot()
+            const loot: ILoot = getLoot()
             const points: number = getRandomNumber(loot.min, loot.max)
             const options: MessageCreateOptions = {
               content: `-# > **Congratulations, \`${user.displayName}\`!  ✨  You found \`${loot.name}\` for \`$${points}\`**`,
