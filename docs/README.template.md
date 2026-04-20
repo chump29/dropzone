@@ -133,7 +133,7 @@
 
 ### 📄 Documentation
 
-### Build:
+### Generate:
 
 ```bash
 ./docs.sh
