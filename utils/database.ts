@@ -101,27 +101,33 @@ const openDatabase = async (): Promise<void> => {
   DB.run("PRAGMA journal_mode = WAL;")
   DB.run("PRAGMA wal_checkpoint(TRUNCATE);")
 
-  await DB.select().from(loot)
-  await DB.select().from(users)
+  try {
+    await DB.select().from(loot)
+    await DB.select().from(users)
+  } catch {
+    if (Bun.env.DEBUG) {
+      info("Creating tables...")
+    }
 
-  let table: string = `
-    CREATE TABLE users(
-      id INTEGER PRIMARY KEY,
-      name TEXT NOT NULL UNIQUE,
-      points INTEGER NOT NULL
+    let table: string = `
+      CREATE TABLE users(
+        id INTEGER PRIMARY KEY,
+        name TEXT NOT NULL UNIQUE,
+        points INTEGER NOT NULL
+      )`
+    SQLITE.run(table)
+
+    table = `
+      CREATE TABLE loot(
+        id INTEGER PRIMARY KEY,
+        max INTEGER NOT NULL,
+        min INTEGER NOT NULL,
+        name TEXT NOT NULL UNIQUE
     )`
-  SQLITE.run(table)
+    SQLITE.run(table)
 
-  table = `
-    CREATE TABLE loot(
-      id INTEGER PRIMARY KEY,
-      max INTEGER NOT NULL,
-      min INTEGER NOT NULL,
-      name TEXT NOT NULL UNIQUE
-  )`
-  SQLITE.run(table)
-
-  await loadLootData()
+    await loadLootData()
+  }
 
   if (Bun.env.DEBUG) {
     info(`Using database: ${DB_STR}`)
