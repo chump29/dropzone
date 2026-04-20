@@ -15,7 +15,7 @@ import prettyMilliseconds from "pretty-ms"
 
 import { type ILoot } from "../db/schema.ts"
 import { getLoot, updatePoints } from "./database.ts"
-import { error, info } from "./logger.ts"
+import { info } from "./logger.ts"
 
 let EMOJI: string = ""
 let MAX_TIME: number = 0
@@ -55,63 +55,56 @@ const dropLoot = async (dropOnly: boolean = false): Promise<void> => {
     throw Error("Minimum time is less than the timeout value!")
   }
 
-  await CLIENT.channels
-    .fetch(Bun.env.CHANNEL_ID)
-    .then(async (channel: Channel | null): Promise<void | Message> => {
-      if (channel) {
-        const options: MessageCreateOptions = {
-          content: "✯ 𝕃𝕆𝕆𝕋 𝔻ℝ𝕆ℙ ✯", // cspell: disable-line
-          flags: MessageFlags.SuppressNotifications
+  await CLIENT.channels.fetch(Bun.env.CHANNEL_ID).then(async (channel: Channel | null): Promise<void | Message> => {
+    if (channel) {
+      const options: MessageCreateOptions = {
+        content: "✯ 𝕃𝕆𝕆𝕋 𝔻ℝ𝕆ℙ ✯", // cspell: disable-line
+        flags: MessageFlags.SuppressNotifications
+      }
+      const message: void | Message = await (channel as TextChannel).send(options)
+      if (message) {
+        await message.react(EMOJI)
+
+        const filter = (reaction: MessageReaction, user: User): boolean => {
+          return reaction.emoji.name === EMOJI && !user.bot
         }
-        const message: void | Message = await (channel as TextChannel).send(options)
-        if (message) {
-          await message.react(EMOJI)
 
-          const filter = (reaction: MessageReaction, user: User): boolean => {
-            return reaction.emoji.name === EMOJI && !user.bot
+        const collector: ReactionCollector = message.createReactionCollector({
+          filter: filter,
+          max: 1,
+          time: TIMEOUT
+        })
+
+        collector.on("collect", async (_: MessageReaction, user: User): Promise<void> => {
+          const loot: ILoot = getLoot()
+          const points: number = getRandomNumber(loot.min, loot.max)
+          const options: MessageCreateOptions = {
+            content: `-# > **Congratulations, \`${user.displayName}\`!  ✨  You found \`${loot.name}\` for \`$${points}\`**`,
+            flags: MessageFlags.SuppressNotifications
           }
+          await (channel as TextChannel).send(options)
+          await updatePoints(user.displayName, points)
 
-          const collector: ReactionCollector = message.createReactionCollector({
-            filter: filter,
-            max: 1,
-            time: TIMEOUT
-          })
+          if (Bun.env.DEBUG) {
+            info(`${user.displayName} claimed ${loot.name} for $${points}`)
+          }
+        })
 
-          collector.on("collect", async (_: MessageReaction, user: User): Promise<void> => {
-            const loot: ILoot = getLoot()
-            const points: number = getRandomNumber(loot.min, loot.max)
+        collector.on("end", async (): Promise<void> => {
+          if (!collector.collected.size) {
             const options: MessageCreateOptions = {
-              content: `-# > **Congratulations, \`${user.displayName}\`!  ✨  You found \`${loot.name}\` for \`$${points}\`**`,
+              content: "-# > Too slow.",
               flags: MessageFlags.SuppressNotifications
             }
             await (channel as TextChannel).send(options)
-            await updatePoints(user.displayName, points)
-
-            if (Bun.env.DEBUG) {
-              info(`${user.displayName} claimed ${loot.name} for $${points}`)
-            }
-          })
-
-          collector.on("end", async (): Promise<void> => {
-            if (!collector.collected.size) {
-              const options: MessageCreateOptions = {
-                content: "-# > Too slow.",
-                flags: MessageFlags.SuppressNotifications
-              }
-              await (channel as TextChannel).send(options)
-            }
-            await message.reactions.removeAll()
-          })
-        }
-      } else {
-        throw new Error("Channel not found")
+          }
+          await message.reactions.removeAll()
+        })
       }
-    })
-    // biome-ignore lint/suspicious/noExplicitAny: catch all errors
-    .catch((e: any) => {
-      error(e)
-      throw e
-    })
+    } else {
+      throw new Error("Channel not found")
+    }
+  })
 
   if (!dropOnly) {
     END = 0
