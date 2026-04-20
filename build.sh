@@ -7,7 +7,6 @@ _nc="\e[0m"
 _title=✨
 _task="🛠️ "
 _lint=🔍
-_test=🧪
 _done="✔️ "
 
 clear
@@ -19,9 +18,6 @@ bun install --frozen-lockfile
 
 echo -e "\n${_lint} ${_yellow}Linting${_nc}:\n"
 bun run lint
-
-#echo -e "${_test} ${_yellow}Testing${_nc}:"
-#pnpm run test
 
 ./docker.sh
 
