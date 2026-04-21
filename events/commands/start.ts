@@ -27,8 +27,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
       content: `-# > ▶️ ${Bun.env.NAME} started`,
       flags: MessageFlags.Ephemeral
     })
-    // biome-ignore lint/suspicious/noExplicitAny: catch all errors
-    .catch((e: any) => {
+    .catch((e: unknown) => {
       error(e)
       throw e
     })

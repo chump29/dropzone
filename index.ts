@@ -23,8 +23,7 @@ await openDatabase()
       startDrop()
     }
   })
-  // biome-ignore lint/suspicious/noExplicitAny: catch all errors
-  .catch(async (e: any): Promise<void> => {
+  .catch(async (e: unknown): Promise<void> => {
     error(e)
     await shutdown()
   })

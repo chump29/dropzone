@@ -1,6 +1,6 @@
 import { mkdir } from "fs/promises"
 
-import { Database } from "bun:sqlite"
+import { Database, SQLiteError } from "bun:sqlite"
 
 import ConvertCsvToJson from "convert-csv-to-json"
 import { desc, eq, sql } from "drizzle-orm"
@@ -104,29 +104,33 @@ const openDatabase = async (): Promise<void> => {
   try {
     await DB.select().from(loot)
     await DB.select().from(users)
-  } catch {
-    if (Bun.env.DEBUG) {
-      info("Creating tables...")
-    }
+  } catch (e: unknown) {
+    if (e instanceof SQLiteError && e.message.includes("no such table")) {
+      if (Bun.env.DEBUG) {
+        info("Creating tables...")
+      }
 
-    let table: string = `
+      let table: string = `
       CREATE TABLE users(
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL UNIQUE,
         points INTEGER NOT NULL
       )`
-    SQLITE.run(table)
+      SQLITE.run(table)
 
-    table = `
+      table = `
       CREATE TABLE loot(
         id INTEGER PRIMARY KEY,
         max INTEGER NOT NULL,
         min INTEGER NOT NULL,
         name TEXT NOT NULL UNIQUE
     )`
-    SQLITE.run(table)
+      SQLITE.run(table)
 
-    await loadLootData()
+      await loadLootData()
+    } else {
+      throw e
+    }
   }
 
   if (Bun.env.DEBUG) {

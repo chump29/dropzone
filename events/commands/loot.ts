@@ -59,8 +59,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
           .toJSON()
       ]
     })
-    // biome-ignore lint/suspicious/noExplicitAny: catch all errors
-    .catch((e: any) => {
+    .catch((e: unknown) => {
       error(e)
       throw e
     })
