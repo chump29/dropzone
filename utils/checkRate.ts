@@ -5,7 +5,7 @@ import ms, { type StringValue } from "ms"
 
 import { info } from "./logger.ts"
 
-const RATE_LIMIT: number = ms((Bun.env.MAX_TIME ?? "3h") as StringValue)
+const RATE_LIMIT: number = ms((Bun.env.MAX_TIME || "3h") as StringValue)
 
 const rateLimiter = new RateLimiter(1, RATE_LIMIT)
 
