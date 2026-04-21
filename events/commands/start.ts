@@ -8,7 +8,7 @@ import {
   SlashCommandBuilder
 } from "discord.js"
 
-import { startDrop } from "../../utils/loadTimer.ts"
+import { END, startDrop } from "../../utils/loadTimer.ts"
 import { error, info } from "../../utils/logger.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
@@ -20,6 +20,19 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
+  if (END) {
+    await interaction
+      .reply({
+        content: `-# > ❌ ${Bun.env.NAME} is already started`,
+        flags: MessageFlags.Ephemeral
+      })
+      .catch((e: unknown): void => {
+        error(e)
+        throw e
+      })
+    return
+  }
+
   startDrop()
 
   await interaction

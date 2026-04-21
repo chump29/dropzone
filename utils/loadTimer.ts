@@ -113,10 +113,6 @@ const dropLoot = async (dropOnly: boolean = false): Promise<void> => {
 }
 
 const startDrop = (): void => {
-  if (END) {
-    return
-  }
-
   const timeout: number = getRandomNumber(MIN_TIME, MAX_TIME)
   ID = setTimeout(dropLoot, timeout)
   END = Date.now() + timeout
@@ -127,10 +123,6 @@ const startDrop = (): void => {
 }
 
 const stopDrop = (): void => {
-  if (!END) {
-    return
-  }
-
   if (ID) {
     clearTimeout(ID)
   }
