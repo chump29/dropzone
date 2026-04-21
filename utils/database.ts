@@ -82,7 +82,7 @@ const listLoot = async (): Promise<ILoot[]> => {
     throw new Error("Invalid loot")
   }
 
-  return LOOT.toSorted((a: ILoot, b: ILoot) => a.min - b.min)
+  return LOOT.toSorted((a: ILoot, b: ILoot): number => a.min - b.min)
 }
 
 const openDatabase = async (): Promise<void> => {

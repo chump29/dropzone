@@ -31,7 +31,7 @@ const getFields = async (): Promise<APIEmbedField[]> => {
         value: ""
       } as APIEmbedField
     ]
-    loot.forEach((item: ILoot) => {
+    loot.forEach((item: ILoot): void => {
       const cost: string = item.min === item.max ? item.min.toString() : `${item.min} - $${item.max}`
       fields.push({
         inline: true,
@@ -59,7 +59,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
           .toJSON()
       ]
     })
-    .catch((e: unknown) => {
+    .catch((e: unknown): void => {
       error(e)
       throw e
     })

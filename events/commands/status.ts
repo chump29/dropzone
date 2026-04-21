@@ -33,7 +33,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
       }\``,
       flags: MessageFlags.Ephemeral
     })
-    .catch((e: unknown) => {
+    .catch((e: unknown): void => {
       error(e)
       throw e
     })

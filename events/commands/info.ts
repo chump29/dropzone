@@ -46,7 +46,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
         embed.toJSON()
       ]
     })
-    .catch((e: unknown) => {
+    .catch((e: unknown): void => {
       error(e)
       throw e
     })

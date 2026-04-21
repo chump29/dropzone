@@ -30,19 +30,19 @@
 
 #### Commands:
 
-|     📋 Task      |   🔧 Command    | ⚙️ Permission |
-|:----------------:|:---------------:|:-------------:|
-|    Drop Loot     |     `/drop`     | Administrator |
-|       Info       |     `/info`     | SendMessages  |
-|   Leaderboard    | `/leaderboard`  | SendMessages  |
-|    List Loot     |     `/loot`     | SendMessages  |
-|       Ping       |     `/ping`     | SendMessages  |
-|    Reload DB     |    `/reload`    | Administrator |
-| Reset All Scores |    `/reset`     | Administrator |
-| Reset User Score | `/reset [user]` | Administrator |
-|   Start Timer    |    `/start`     | Administrator |
-|      Status      |    `/status`    | Administrator |
-|    Stop Timer    |     `/stop`     | Administrator |
+|      📋 Task       |   🔧 Command    | ⚙️ Permission |
+|:------------------:|:---------------:|:-------------:|
+|     Drop Loot      |     `/drop`     | Administrator |
+|        Info        |     `/info`     | SendMessages  |
+|  Show Leaderboard  | `/leaderboard`  | SendMessages  |
+|   List All Loot    |     `/loot`     | SendMessages  |
+|        Ping        |     `/ping`     | SendMessages  |
+| Reload DB from CSV |    `/reload`    | Administrator |
+|  Reset All Scores  |    `/reset`     | Administrator |
+|  Reset User Score  | `/reset [user]` | Administrator |
+|    Start Timer     |    `/start`     | Administrator |
+|    Timer Status    |    `/status`    | Administrator |
+|     Stop Timer     |     `/stop`     | Administrator |
 
 ---
 

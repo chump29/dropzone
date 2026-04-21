@@ -31,7 +31,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
       content: `-# > **Pong!** ⚡ Your latency is: \`${Date.now() - interaction.createdTimestamp}ms\``,
       flags: MessageFlags.Ephemeral
     })
-    .catch((e: unknown) => {
+    .catch((e: unknown): void => {
       error(e)
       throw e
     })

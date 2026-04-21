@@ -27,7 +27,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
       content: "-# > 💰 Loot dropped",
       flags: MessageFlags.Ephemeral
     })
-    .catch((e: unknown) => {
+    .catch((e: unknown): void => {
       error(e)
       throw e
     })

@@ -1,5 +1,3 @@
-// biome-ignore-all lint/suspicious/noExplicitAny: can log anything
-
 import { format } from "date-and-time"
 import { bgBlue, bgRed, cyan, red, white } from "recolors"
 
@@ -7,22 +5,22 @@ const getTime = (): string => {
   return cyan(" [") + white(format(new Date(), "MM/DD/YYYY @ HH:mm:ss")) + cyan("] ")
 }
 
-const error = (...o: any[]): void => {
-  if (!o.length) {
+const error = (...objs: unknown[]): void => {
+  if (!objs.length) {
     return
   }
 
   console.error(bgRed(white(" ERROR ")) + getTime())
-  o.forEach((x: any) => console.error(red(" ⤷"), x))
+  objs.forEach((obj: unknown): void => console.error(red(" ⤷"), obj))
 }
 
-const info = (...o: any[]): void => {
-  if (!o.length) {
+const info = (...objs: unknown[]): void => {
+  if (!objs.length) {
     return
   }
 
   console.info(bgBlue(white(" INFO ")) + getTime())
-  o.forEach((x: any) => console.info(cyan(" ⤷"), x))
+  objs.forEach((obj: unknown): void => console.info(cyan(" ⤷"), obj))
 }
 
 export { error, info }

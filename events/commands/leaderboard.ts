@@ -41,7 +41,7 @@ const getEmbed = async (): Promise<APIEmbedField[]> => {
           value: ""
         } as APIEmbedField)
       } else {
-        users.forEach((user: IUser, i: number) => {
+        users.forEach((user: IUser, i: number): void => {
           fields.push({
             inline: true,
             name: `${i === 0 ? "👑 " : ""}${user.name}`,
@@ -69,7 +69,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
           .toJSON()
       ]
     })
-    .catch((e: unknown) => {
+    .catch((e: unknown): void => {
       error(e)
       throw e
     })
