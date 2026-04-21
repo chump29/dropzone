@@ -24,13 +24,13 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
   await interaction
     .reply({
-      content: `-# > ⏰ Next loot drop is in ${
+      content: `-# > ⏰ Next loot drop is in \`${
         END
           ? prettyMilliseconds(END - Date.now(), {
               verbose: true
             })
           : "N/A"
-      }`,
+      }\``,
       flags: MessageFlags.Ephemeral
     })
     .catch((e: unknown) => {
