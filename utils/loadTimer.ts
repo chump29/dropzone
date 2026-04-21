@@ -29,10 +29,10 @@ let ID: NodeJS.Timeout | null = null
 let END: number = 0
 
 const loadSettings = async (): Promise<void> => {
-  EMOJI = Bun.env.EMOJI ?? "💰"
-  MAX_TIME = ms((Bun.env.MAX_TIME ?? "3h") as StringValue)
-  MIN_TIME = ms((Bun.env.MIN_TIME ?? "1h") as StringValue)
-  TIMEOUT = ms((Bun.env.TIMEOUT ?? "1m") as StringValue)
+  EMOJI = Bun.env.EMOJI || "💰"
+  MAX_TIME = ms((Bun.env.MAX_TIME || "3h") as StringValue)
+  MIN_TIME = ms((Bun.env.MIN_TIME || "1h") as StringValue)
+  TIMEOUT = ms((Bun.env.TIMEOUT || "1m") as StringValue)
 
   if (Bun.env.DEBUG) {
     info("Settings loaded")
