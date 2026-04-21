@@ -16,7 +16,7 @@ let LOOT_COUNT: number = 0
 
 const clearLoot = async (): Promise<void> => {
   if (!DB) {
-    throw Error("Database not open")
+    throw new Error("Database not open")
   }
 
   await DB.delete(loot)
@@ -28,7 +28,7 @@ const clearLoot = async (): Promise<void> => {
 
 const loadLootData = async (): Promise<void> => {
   if (!DB) {
-    throw Error("Database not open")
+    throw new Error("Database not open")
   }
 
   await clearLoot()
@@ -58,7 +58,7 @@ const loadLootData = async (): Promise<void> => {
 
 const loadLoot = async (): Promise<void> => {
   if (!DB) {
-    throw Error("Database not open")
+    throw new Error("Database not open")
   }
 
   LOOT = await DB.select().from(loot)
@@ -71,7 +71,7 @@ const loadLoot = async (): Promise<void> => {
 
 const getLoot = (): ILoot => {
   if (!LOOT) {
-    throw Error("Loot not loaded")
+    throw new Error("Invalid loot")
   }
 
   return LOOT[Math.floor(Math.random() * LOOT_COUNT)] as ILoot
@@ -79,7 +79,7 @@ const getLoot = (): ILoot => {
 
 const listLoot = async (): Promise<ILoot[]> => {
   if (!LOOT) {
-    throw Error("Loot not found")
+    throw new Error("Invalid loot")
   }
 
   return LOOT.toSorted((a: ILoot, b: ILoot) => a.min - b.min)
@@ -140,7 +140,7 @@ const openDatabase = async (): Promise<void> => {
 
 const updatePoints = async (name: string, points: number): Promise<void> => {
   if (!DB) {
-    throw Error("Database not open")
+    throw new Error("Database not open")
   }
 
   await DB.insert(users)
@@ -158,7 +158,7 @@ const updatePoints = async (name: string, points: number): Promise<void> => {
 
 const getAll = async (): Promise<IUser[]> => {
   if (!DB) {
-    throw Error("Database not open")
+    throw new Error("Database not open")
   }
 
   return await DB.select().from(users).orderBy(desc(users.points))
@@ -166,7 +166,7 @@ const getAll = async (): Promise<IUser[]> => {
 
 const resetPoints = async (name: string | null = null): Promise<void> => {
   if (!DB) {
-    throw Error("Database not open")
+    throw new Error("Database not open")
   }
 
   const tx = DB.update(users).set({

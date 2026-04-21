@@ -48,11 +48,11 @@ const getRandomNumber = (min: number, max: number): number => {
 
 const dropLoot = async (dropOnly: boolean = false): Promise<void> => {
   if (!CLIENT) {
-    throw Error("No client")
+    throw new Error("Invalid client")
   }
 
   if (MIN_TIME <= TIMEOUT) {
-    throw Error("Minimum time is less than the timeout value!")
+    MIN_TIME = TIMEOUT
   }
 
   await CLIENT.channels.fetch(Bun.env.CHANNEL_ID).then(async (channel: Channel | null): Promise<void | Message> => {
@@ -102,7 +102,7 @@ const dropLoot = async (dropOnly: boolean = false): Promise<void> => {
         })
       }
     } else {
-      throw new Error("Channel not found")
+      throw new Error("Invalid channel")
     }
   })
 
