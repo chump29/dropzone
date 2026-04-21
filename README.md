@@ -106,21 +106,23 @@
 
 #### Environment Variables:
 
-|  📝 Description   | 📌 Variable |  {...} Value   |
-|:-----------------:|:-----------:|:--------------:|
-|  Autostart Timer  |  AUTOSTART  | **true**/false |
-|      DB Name      |   DB_NAME   | dropzonebot.db |
-|      DB Path      |   DB_PATH   |     ./db/      |
-|    Loot Emoji     |    EMOJI    |       💰       |
-|       Debug       |  IS_DEBUG   | true/**false** |
-| Logo Server Port  |  LOGO_PORT  |      8001      |
-|  Run Logo Server  | LOGO_SERVER | **true**/false |
-|     Logo URL      |  LOGO_URL   |   [logo url]   |
-|   Maximum Time    |  MAX_TIME   |       3h       |
-|   Minimum Time    |  MIN_TIME   |       1h       |
-|     Bot Name      |    NAME     |  DropZoneBot   |
-| Rate Limiter (ms) |    RATE     |      1000      |
-|   Loot Timeout    |   TIMEOUT   |       1m       |
+|   📝 Description   | 📌 Variable |  {...} Value   |
+|:------------------:|:-----------:|:--------------:|
+|  Autostart Timer   |  AUTOSTART  | **true**/false |
+| Message Channel ID | CHANNEL_ID  |  [channel id]  |
+|      DB Name       |   DB_NAME   | dropzonebot.db |
+|      DB Path       |   DB_PATH   |     ./db/      |
+|     Loot Emoji     |    EMOJI    |       💰       |
+|       Debug        |  IS_DEBUG   | true/**false** |
+|  Logo Server Port  |  LOGO_PORT  |      8001      |
+|  Run Logo Server   | LOGO_SERVER | **true**/false |
+|      Logo URL      |  LOGO_URL   |   [logo url]   |
+|    Maximum Time    |  MAX_TIME   |       3h       |
+|    Minimum Time    |  MIN_TIME   |       1h       |
+|      Bot Name      |    NAME     |  DropZoneBot   |
+| Message Rate Limit |    RATE     |       1s       |
+|    Loot Timeout    |   TIMEOUT   |       1m       |
+|     Bot Token      |    TOKEN    |    [token]     |
 
 #### Deployment:
 
@@ -133,7 +135,7 @@
 
 ### 📄 Documentation
 
-### Build:
+### Generate:
 
 ```bash
 ./docs.sh

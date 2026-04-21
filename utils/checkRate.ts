@@ -1,11 +1,11 @@
 import { type ChatInputCommandInteraction, MessageFlags, type User } from "discord.js"
 
 import { RateLimiter } from "discord.js-rate-limiter"
-import ms from "ms"
+import ms, { type StringValue } from "ms"
 
 import { info } from "./logger.ts"
 
-const RATE_LIMIT: number = Bun.env.RATE ? Number(Bun.env.RATE) : ms("1s")
+const RATE_LIMIT: number = ms((Bun.env.MAX_TIME ?? "3h") as StringValue)
 
 const rateLimiter = new RateLimiter(1, RATE_LIMIT)
 
