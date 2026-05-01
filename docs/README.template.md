@@ -15,7 +15,13 @@
 
 ---
 
-### 🖥️ Discord <!-- markdownlint-disable-line MD001 -->
+### 🔗 Invite Link <!-- markdownlint-disable-line MD001 -->
+
+[Add DropZoneBot](https://discord.com/oauth2/authorize?client_id=1491121781006925854&permissions=93248&integration_type=0&scope=bot)
+
+---
+
+### 🖥️ Discord
 
 #### Role Permissions:
 

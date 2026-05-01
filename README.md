@@ -4,9 +4,9 @@
 
 ---
 
-![Biome](https://img.shields.io/badge/Biome-^2.4.12-informational?style=plastic&logo=biome) &nbsp;
-![Bun](https://img.shields.io/badge/Bun-~1.3.12-informational?style=plastic&logo=bun) &nbsp;
-![discord.js](https://img.shields.io/badge/discord.js-^14.26.3-informational?style=plastic&logo=discord.js) &nbsp;
+![Biome](https://img.shields.io/badge/Biome-^2.4.13-informational?style=plastic&logo=biome) &nbsp;
+![Bun](https://img.shields.io/badge/Bun-~1.3.13-informational?style=plastic&logo=bun) &nbsp;
+![discord.js](https://img.shields.io/badge/discord.js-^14.26.4-informational?style=plastic&logo=discord.js) &nbsp;
 ![Drizzle](https://img.shields.io/badge/Drizzle-1.0.0--beta.22-informational?style=plastic&logo=drizzle) &nbsp;
 ![SQLite](https://img.shields.io/badge/SQLite-3.49.2-informational?style=plastic&logo=sqlite)
 
@@ -15,7 +15,13 @@
 
 ---
 
-### 🖥️ Discord <!-- markdownlint-disable-line MD001 -->
+### 🔗 Invite Link <!-- markdownlint-disable-line MD001 -->
+
+[Add DropZoneBot](https://discord.com/oauth2/authorize?client_id=1491121781006925854&permissions=93248&integration_type=0&scope=bot)
+
+---
+
+### 🖥️ Discord
 
 #### Role Permissions:
 
