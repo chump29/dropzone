@@ -2,14 +2,16 @@ import { parse } from "node:path"
 
 import {
   type ChatInputCommandInteraction,
+  type InteractionResponse,
   MessageFlags,
   PermissionFlagsBits,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
 } from "discord.js"
 
-import { dropLoot } from "../../utils/loadTimer.ts"
-import { error, info } from "../../utils/logger.ts"
+import { info } from "@postfmly/logger"
+
+import { dropLoot, RUNNING } from "../../utils/loadTimer.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
@@ -20,17 +22,21 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  await dropLoot(true)
-
-  await interaction
-    .reply({
-      content: "-# > 💰 Loot dropped",
+  if (!RUNNING) {
+    await interaction.reply({
+      content: `-# > ❌ ${Bun.env.NAME} is not started`,
       flags: MessageFlags.Ephemeral
     })
-    .catch((e: unknown): void => {
-      error(e)
-      throw e
-    })
+    return
+  }
+
+  await dropLoot(true).then(
+    async (): Promise<InteractionResponse> =>
+      await interaction.reply({
+        content: "-# > 💰 Loot dropped",
+        flags: MessageFlags.Ephemeral
+      })
+  )
 
   if (Bun.env.DEBUG) {
     info("Loot dropped")

@@ -10,10 +10,11 @@ import {
   SlashCommandBuilder
 } from "discord.js"
 
+import { checkRate } from "@postfmly/checkrate"
+import { info } from "@postfmly/logger"
+
 import { type ILoot } from "../../db/schema.ts"
-import { checkRate } from "../../utils/checkRate.ts"
-import { listLoot } from "../../utils/database.ts"
-import { error, info } from "../../utils/logger.ts"
+import { LOOT } from "../../utils/loadTimer.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
@@ -24,23 +25,21 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const getFields = async (): Promise<APIEmbedField[]> => {
-  return await listLoot().then((loot: ILoot[]): APIEmbedField[] => {
-    const fields: APIEmbedField[] = [
-      {
-        name: "_ _",
-        value: ""
-      } as APIEmbedField
-    ]
-    loot.forEach((item: ILoot): void => {
-      const cost: string = item.min === item.max ? item.min.toString() : `${item.min} - $${item.max}`
-      fields.push({
-        inline: true,
-        name: item.name,
-        value: `-# $${cost}`
-      } as APIEmbedField)
-    })
-    return fields
+  const fields: APIEmbedField[] = [
+    {
+      name: "_ _",
+      value: ""
+    } as APIEmbedField
+  ]
+  LOOT.forEach((item: ILoot): void => {
+    const cost: string = item.min === item.max ? item.min.toString() : `${item.min} - $${item.max}`
+    fields.push({
+      inline: true,
+      name: item.name,
+      value: `-# $${cost}`
+    } as APIEmbedField)
   })
+  return fields
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
@@ -48,21 +47,16 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
     return
   }
 
-  await interaction
-    .reply({
-      flags: MessageFlags.Ephemeral,
-      embeds: [
-        new EmbedBuilder()
-          .setColor("#78866b")
-          .setTitle(`💰  ${Bun.env.NAME} Loot  💰`)
-          .setFields(await getFields())
-          .toJSON()
-      ]
-    })
-    .catch((e: unknown): void => {
-      error(e)
-      throw e
-    })
+  await interaction.reply({
+    flags: MessageFlags.Ephemeral,
+    embeds: [
+      new EmbedBuilder()
+        .setColor("#78866b")
+        .setTitle(`💰  ${Bun.env.NAME} Loot  💰`)
+        .setFields(await getFields())
+        .toJSON()
+    ]
+  })
 
   if (Bun.env.DEBUG) {
     info("Listed loot")

@@ -1,4 +1,5 @@
 .env.local
-.vscode/
-db/dropzonebot.db
+.vscode
+coverage/
+db/dropzonebot*
 node_modules/

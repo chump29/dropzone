@@ -2,14 +2,19 @@ import { parse } from "node:path"
 
 import {
   type ChatInputCommandInteraction,
+  type InteractionResponse,
   MessageFlags,
   PermissionFlagsBits,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
 } from "discord.js"
 
-import { clearLoot, loadLoot, loadLootData } from "../../utils/database.ts"
-import { error, info } from "../../utils/logger.ts"
+import { info } from "@postfmly/logger"
+
+import pluralize from "pluralize"
+
+import { loadLootData } from "../../utils/db.ts"
+import { COUNT, refreshLoot } from "../../utils/loadTimer.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
@@ -20,22 +25,18 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  await clearLoot()
-    .then(async (): Promise<void> => await loadLootData())
-    .then(async (): Promise<void> => await loadLoot())
-
-  await interaction
-    .reply({
-      content: "-# > 🔄 Loot table has been reloaded",
-      flags: MessageFlags.Ephemeral
-    })
-    .catch((e: unknown): void => {
-      error(e)
-      throw e
-    })
+  await loadLootData()
+    .then(async (): Promise<void> => await refreshLoot())
+    .then(
+      async (): Promise<InteractionResponse> =>
+        await interaction.reply({
+          content: "-# > 🔄 Loot table has been reloaded",
+          flags: MessageFlags.Ephemeral
+        })
+    )
 
   if (Bun.env.DEBUG) {
-    info("Timer started")
+    info(`Loaded ${pluralize("loot item", COUNT, true)}`)
   }
 }
 

@@ -1,0 +1,24 @@
+{
+  "$comment": "https://ajv.js.org/",
+  "properties": {
+    "max": {
+      "type": "integer",
+      "minimum": {
+        "$data": "1/min"
+      }
+    },
+    "min": {
+      "exclusiveMinimum": 0,
+      "type": "integer"
+    },
+    "name": {
+      "minLength": 3,
+      "type": "string"
+    }
+  },
+  "required": [
+    "max",
+    "min",
+    "name"
+  ]
+}

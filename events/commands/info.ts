@@ -10,8 +10,9 @@ import {
   SlashCommandBuilder
 } from "discord.js"
 
-import { checkRate } from "../../utils/checkRate.ts"
-import { error } from "../../utils/logger.ts"
+import { checkRate } from "@postfmly/checkrate"
+
+import { COUNT } from "../../utils/loadTimer.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
@@ -22,34 +23,32 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
     .toJSON()
 }
 
-const embed: EmbedBuilder = new EmbedBuilder()
-  .setColor("#78866b")
-  .setAuthor({
-    iconURL: Bun.env.LOGO_URL,
-    name: `${Bun.env.NAME} v${Bun.env.npm_package_version}`
-  })
-  .setThumbnail(Bun.env.LOGO_URL)
-  .setDescription("- Collect military items for cash!")
-  .setFooter({
-    text: "By Chris Post"
-  })
-
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
   if (await checkRate(interaction)) {
     return
   }
 
-  await interaction
-    .reply({
-      flags: MessageFlags.Ephemeral,
-      embeds: [
-        embed.toJSON()
-      ]
-    })
-    .catch((e: unknown): void => {
-      error(e)
-      throw e
-    })
+  await interaction.reply({
+    flags: MessageFlags.Ephemeral,
+    embeds: [
+      new EmbedBuilder()
+        .setColor("#78866b")
+        .setAuthor({
+          iconURL: Bun.env.LOGO_URL,
+          name: `${Bun.env.NAME} v${Bun.env.npm_package_version}`
+        })
+        .setThumbnail(Bun.env.LOGO_URL)
+        .setDescription("- Collect military items for cash!")
+        .setFields({
+          inline: true,
+          name: "Total Loot Items:",
+          value: COUNT.toLocaleString()
+        })
+        .setFooter({
+          text: "By Chris Post"
+        })
+    ]
+  })
 }
 
 export { create, invoke }

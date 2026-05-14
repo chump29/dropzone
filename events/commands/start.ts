@@ -2,14 +2,14 @@ import { parse } from "node:path"
 
 import {
   type ChatInputCommandInteraction,
+  type InteractionResponse,
   MessageFlags,
   PermissionFlagsBits,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
 } from "discord.js"
 
-import { END, startDrop } from "../../utils/loadTimer.ts"
-import { error, info } from "../../utils/logger.ts"
+import { RUNNING, startTimer } from "../../utils/loadTimer.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
@@ -20,34 +20,21 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  if (END) {
-    await interaction
-      .reply({
-        content: `-# > ❌ ${Bun.env.NAME} is already started`,
-        flags: MessageFlags.Ephemeral
-      })
-      .catch((e: unknown): void => {
-        error(e)
-        throw e
-      })
+  if (RUNNING) {
+    await interaction.reply({
+      content: `-# > ❌ ${Bun.env.NAME} is already started`,
+      flags: MessageFlags.Ephemeral
+    })
     return
   }
 
-  startDrop()
-
-  await interaction
-    .reply({
-      content: `-# > ▶️ ${Bun.env.NAME} started`,
-      flags: MessageFlags.Ephemeral
-    })
-    .catch((e: unknown): void => {
-      error(e)
-      throw e
-    })
-
-  if (Bun.env.DEBUG) {
-    info("Started")
-  }
+  await startTimer().then(
+    async (): Promise<InteractionResponse> =>
+      await interaction.reply({
+        content: `-# > ▶️ ${Bun.env.NAME} started`,
+        flags: MessageFlags.Ephemeral
+      })
+  )
 }
 
 export { create, invoke }

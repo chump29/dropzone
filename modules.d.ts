@@ -5,16 +5,14 @@ declare module "bun" {
     DB_NAME: string
     DB_PATH: string
     DEBUG: boolean
+    DEBUG_SQL: string
     EMOJI: string
     IS_DEBUG: string
-    LOGO_PORT: string
-    LOGO_SERVER: string
     LOGO_URL: string
     MAX_TIME: string
     MIN_TIME: string
     NAME: string
     npm_package_version: string
-    RATE: string
     TIMEOUT: string
     TOKEN: string
   }

@@ -1,37 +1,46 @@
 #!/usr/bin/env -S bash -e
 
-strip() {
-  echo "${1:1:-1}"
-}
-
 clear
 
-echo -e "📌 Variables:\n"
+if [ ! -d ../node_modules ]; then
+  echo -e "🛠️ Installing packages\n"
+  bun install
+  echo
+fi
 
-_biome=$(jq '.devDependencies."@biomejs/biome"' ../package.json)
-_biome=$(strip "$_biome")
+echo -e "📌 Packages:\n"
+
+_biome=^$(bun biome --version | cut -d " " -f 2)
 export _biome
-echo -e " • _biome: $_biome"
+echo -e " • @biomejs/biome: $_biome"
 
-_bun=$(jq .engines.bun ../package.json)
-_bun=$(strip "$_bun")
+_version=$(bun --version)
+bun pm pkg set packageManager="bun@$_version" engines.bun="~$_version" > /dev/null 2>&1
+_bun=$(jq -r .engines.bun ../package.json)
 export _bun
-echo -e " • _bun: $_bun"
+echo -e " • Bun: $_bun"
 
-_discord=$(jq '.dependencies."discord.js"' ../package.json)
-_discord=$(strip "$_discord")
+_discord=$(jq -r '.dependencies."discord.js"' ../package.json)
 export _discord
-echo -e " • _discord: $_discord"
+echo -e " • discord.js: $_discord"
 
-_drizzle=$(jq '.dependencies."drizzle-orm"' ../package.json)
-_drizzle=$(strip "$_drizzle")
+_drizzle=$(jq -r '.dependencies."drizzle-orm"' ../package.json)
 _drizzle=${_drizzle/-/--}
 export _drizzle
-echo -e " • _drizzle: ${_drizzle/--/-}"
+echo -e " • drizzle-orm: ${_drizzle/--/-}"
 
-_sqlite=3.49.2
+_name=$(jq -r .name ../package.json)
+_sqlite=$(docker exec "$_name" apk info sqlite | head -n 1 | cut -d " " -f 1)
+_sqlite=${_sqlite:7:-3}
 export _sqlite
-echo -e " • _sqlite: $_sqlite"
+echo -e " • SQLite: $_sqlite"
+
+if [ ! -f "../coverage/lcov.info" ]; then
+  bun run test > /dev/null 2>&1
+fi
+_coverage=$(bun run lcov-total ../coverage/lcov.info)
+export _coverage
+echo -e "\n☂️  Coverage: $_coverage%"
 
 echo -e "\n🛠️  Creating README.md..."
 

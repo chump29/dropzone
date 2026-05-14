@@ -10,8 +10,7 @@ import {
 
 import prettyMilliseconds from "pretty-ms"
 
-import { END } from "../../utils/loadTimer.ts"
-import { error } from "../../utils/logger.ts"
+import { END, RUNNING } from "../../utils/loadTimer.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
@@ -22,21 +21,16 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  await interaction
-    .reply({
-      content: `-# > ⏰ Next loot drop is in \`${
-        END
-          ? prettyMilliseconds(END - Date.now(), {
-              verbose: true
-            })
-          : "N/A"
-      }\``,
-      flags: MessageFlags.Ephemeral
-    })
-    .catch((e: unknown): void => {
-      error(e)
-      throw e
-    })
+  await interaction.reply({
+    content: `-# > ⏰ Next loot drop is in \`${
+      RUNNING
+        ? prettyMilliseconds(END - Date.now(), {
+            verbose: true
+          })
+        : "N/A"
+    }\``,
+    flags: MessageFlags.Ephemeral
+  })
 }
 
 export { create, invoke }

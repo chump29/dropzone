@@ -1,12 +1,11 @@
 *
 
-!.env
-!.env.production
 !bun.lock
 !db/schema.ts
 !events/
 !utils/
 !healthcheck.sh
 !index.ts
+!patches/
 !package.json
 !tsconfig.json
