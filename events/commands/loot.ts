@@ -31,7 +31,7 @@ const getFields = async (): Promise<APIEmbedField[]> => {
       value: ""
     } as APIEmbedField
   ]
-  LOOT.forEach((item: ILoot): void => {
+  LOOT.sort((a: ILoot, b: ILoot): number => a.min - b.min).forEach((item: ILoot): void => {
     const cost: string = item.min === item.max ? item.min.toString() : `${item.min} - $${item.max}`
     fields.push({
       inline: true,

@@ -21,6 +21,14 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
+  if (!RUNNING) {
+    await interaction.reply({
+      content: `-# > ❌ ${Bun.env.NAME} is not started`,
+      flags: MessageFlags.Ephemeral
+    })
+    return
+  }
+
   await interaction.reply({
     content: `-# > ⏰ Next loot drop is in \`${
       RUNNING

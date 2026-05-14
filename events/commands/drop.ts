@@ -11,7 +11,7 @@ import {
 
 import { info } from "@postfmly/logger"
 
-import { dropLoot, RUNNING } from "../../utils/loadTimer.ts"
+import { dropLoot } from "../../utils/loadTimer.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
@@ -22,14 +22,6 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
 }
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  if (!RUNNING) {
-    await interaction.reply({
-      content: `-# > ❌ ${Bun.env.NAME} is not started`,
-      flags: MessageFlags.Ephemeral
-    })
-    return
-  }
-
   await dropLoot(true).then(
     async (): Promise<InteractionResponse> =>
       await interaction.reply({
